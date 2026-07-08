@@ -41,7 +41,11 @@ import { plans, priceGroups, site } from '../data/home';
       {
         priceGroups.map((group) => (
           <div class="price-group">
-            <h3>{group.title}</h3>
+            <h3>
+              <span class="title-lines">
+                {group.title.split('\n').map((line) => <span>{line}</span>)}
+              </span>
+            </h3>
             {
               group.rows.map((row) => (
                 <div class="price-row">
@@ -122,6 +126,7 @@ import { plans, priceGroups, site } from '../data/home';
     display:flex;align-items:center;gap:10px;
   }
   .price-group h3::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--blue)}
+  .price-group h3 .title-lines{display:flex;flex-direction:column;gap:2px}
   .price-row{
     display:grid;grid-template-columns:1fr auto;gap:24px;
     padding:14px 0;border-top:1px solid var(--rule);
