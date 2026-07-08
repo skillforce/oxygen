@@ -41,7 +41,9 @@ const {
 
 const siteOrigin = Astro.site ?? new URL(Astro.url.origin);
 const canonicalUrl = new URL(Astro.url.pathname, siteOrigin).toString();
-const imageUrl = new URL(image, siteOrigin).toString();
+const imageUrl = new URL(image, siteOrigin);
+imageUrl.searchParams.set('v', '20260708');
+const imageUrlString = imageUrl.toString();
 ---
 
 <html lang={lang}>
@@ -64,9 +66,9 @@ const imageUrl = new URL(image, siteOrigin).toString();
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:site_name" content={siteName} />
     <meta property="og:locale" content={locale} />
-    <meta property="og:image" content={imageUrl} />
-    <meta property="og:image:url" content={imageUrl} />
-    <meta property="og:image:secure_url" content={imageUrl} />
+    <meta property="og:image" content={imageUrlString} />
+    <meta property="og:image:url" content={imageUrlString} />
+    <meta property="og:image:secure_url" content={imageUrlString} />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content={String(imageWidth)} />
     <meta property="og:image:height" content={String(imageHeight)} />
@@ -74,7 +76,7 @@ const imageUrl = new URL(image, siteOrigin).toString();
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image" content={imageUrlString} />
     <meta name="twitter:image:alt" content={imageAlt} />
     <slot name="head" />
   </head>

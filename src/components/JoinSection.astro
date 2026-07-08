@@ -43,7 +43,8 @@ import { plans, priceGroups, site } from '../data/home';
           <div class="price-group">
             <h3>
               <span class="title-lines">
-                {group.title.split('\n').map((line) => <span>{line}</span>)}
+                <span>{group.title}</span>
+                {group.detail && <span>{group.detail}</span>}
               </span>
             </h3>
             {
