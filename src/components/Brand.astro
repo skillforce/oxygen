@@ -1,0 +1,25 @@
+---
+export interface Props {
+  href?: string;
+  label?: string;
+}
+
+const {
+  href = '#top',
+  label = 'Oxygen Fitness — на главную',
+} = Astro.props;
+---
+
+<a href={href} class="brand" aria-label={label}>
+  <span class="brand-name">O<b>X</b>YGEN FITNESS</span>
+</a>
+
+<style>
+  .brand{
+    display:flex;align-items:center;gap:10px;
+    min-width:0;
+    font-family:'Archivo Black';font-size:var(--brand-size, 18px);letter-spacing:.02em;
+  }
+  .brand-name{line-height:1.12}
+  .brand-name b{color:var(--blue);font-weight:inherit}
+</style>

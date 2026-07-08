@@ -1,0 +1,40 @@
+---
+const tickerItems = Array.from({ length: 3 });
+---
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    {
+      tickerItems.map(() => (
+        <div class="ticker-item">
+          Train hard <span class="dot"></span> Recover smart <span class="dot"></span>
+          <em>Breathe deeper</em> <span class="dot"></span> Move better <span class="dot"></span>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .ticker{
+    border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+    background:var(--bg);
+    overflow:hidden;
+    padding:18px 0;
+  }
+  .ticker-track{
+    display:flex;gap:48px;width:max-content;
+    animation:ticker 38s linear infinite;
+    will-change:transform;
+  }
+  .ticker-item{
+    display:inline-flex;align-items:center;gap:48px;
+    font-family:'Archivo Black';font-size:clamp(28px, 4.4vw, 64px);
+    letter-spacing:-.02em;text-transform:uppercase;color:var(--ink);
+    white-space:nowrap;
+  }
+  .ticker-item .dot{width:14px;height:14px;border-radius:50%;background:var(--blue);flex:0 0 auto}
+  .ticker-item em{color:var(--blue);font-family:'Archivo Black';font-style:normal}
+  @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+</style>

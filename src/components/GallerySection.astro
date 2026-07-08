@@ -1,0 +1,184 @@
+---
+import { Image } from 'astro:assets';
+import { galleryImages } from '../data/home';
+
+const tileWidths = [400, 800];
+const tileSizes = '(max-width: 640px) 50vw, (max-width: 900px) 33vw, (max-width: 1200px) 25vw, 20vw';
+
+const tileShapes = [
+  { className: 'tile-wide', weight: 0.75 },
+  { className: 'tile-square', weight: 1 },
+  { className: 'tile-tall', weight: 1.66 },
+  { className: 'tile-portrait', weight: 1.25 },
+  { className: 'tile-banner', weight: 0.8 },
+  { className: 'tile-long', weight: 1.5 },
+  { className: 'tile-base', weight: 1.33 },
+];
+
+const galleryTiles = galleryImages.map((image, index) => ({
+  ...image,
+  shape: tileShapes[index % tileShapes.length],
+}));
+
+type GalleryTile = (typeof galleryTiles)[number];
+
+const splitIntoBalancedColumns = (tiles: GalleryTile[]) => {
+  const gapWeight = 0.07;
+  const totalWeight = tiles.reduce((sum, tile) => sum + tile.shape.weight, 0);
+  let bestMask = 0;
+  let bestScore = Number.POSITIVE_INFINITY;
+
+  for (let mask = 0; mask < 1 << tiles.length; mask += 1) {
+    let selectedWeight = 0;
+    let selectedCount = 0;
+
+    tiles.forEach((tile, index) => {
+      if (mask & (1 << index)) {
+        selectedWeight += tile.shape.weight;
+        selectedCount += 1;
+      }
+    });
+
+    const otherCount = tiles.length - selectedCount;
+    if (Math.abs(selectedCount - otherCount) > 1) continue;
+
+    const selectedHeight = selectedWeight + Math.max(selectedCount - 1, 0) * gapWeight;
+    const otherHeight = totalWeight - selectedWeight + Math.max(otherCount - 1, 0) * gapWeight;
+    const score = Math.abs(selectedHeight - otherHeight);
+
+    if (score < bestScore) {
+      bestScore = score;
+      bestMask = mask;
+    }
+  }
+
+  return [
+    { items: tiles.filter((_, index) => Boolean(bestMask & (1 << index))) },
+    { items: tiles.filter((_, index) => !Boolean(bestMask & (1 << index))) },
+  ];
+};
+
+const mobileColumns = splitIntoBalancedColumns(galleryTiles);
+---
+
+<section class="gallery" id="gallery" aria-labelledby="gallery-h" data-screen-label="Зоны клуба">
+  <div class="wrap">
+    <header class="gallery-head reveal">
+      <h2 id="gallery-h">Наш <em>зал.</em></h2>
+      <div class="meta">
+        <span class="eyebrow">02 — Зоны клуба</span>
+        <b>г. Могилёв, ул. Чигринова 2А</b>
+      </div>
+    </header>
+
+    <div class="masonry">
+      {
+        galleryTiles.map((image) => (
+          <figure class:list={['reveal', image.shape.className]}>
+            <Image src={image.src} alt={image.alt} width={800} widths={tileWidths} sizes={tileSizes} format="avif" loading="lazy" />
+          </figure>
+        ))
+      }
+    </div>
+
+    <div class="mobile-masonry">
+      {
+        mobileColumns.map((column) => (
+          <div class="mobile-masonry-column">
+            {
+              column.items.map((image) => (
+                <figure class:list={['reveal', image.shape.className]}>
+                  <Image src={image.src} alt={image.alt} width={800} widths={tileWidths} sizes={tileSizes} format="avif" loading="lazy" />
+                </figure>
+              ))
+            }
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .gallery{
+    background:var(--bg);
+    padding:clamp(80px, 10vw, 140px) 0;
+    border-top:1px solid var(--rule);
+  }
+  .gallery-head{
+    display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;
+    margin-bottom:clamp(40px, 6vw, 72px);
+  }
+  .gallery-head h2{
+    font-family:'Archivo Black';font-size:clamp(40px,6vw,92px);
+    letter-spacing:-.03em;line-height:.9;text-transform:uppercase;color:var(--ink);
+  }
+  .gallery-head h2 em{color:var(--blue);font-style:normal}
+  .gallery-head .meta{text-align:right}
+  .gallery-head .meta .eyebrow{
+    display:block;font-family:'JetBrains Mono', monospace;font-size:.76rem;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:8px;
+  }
+  .gallery-head .meta b{color:var(--ink);font-weight:600;font-family:'Open Sans'}
+  .masonry{
+    column-count:5;
+    column-gap:12px;
+  }
+  .mobile-masonry{display:none}
+  .masonry figure,
+  .mobile-masonry figure{
+    margin:0 0 12px;
+    break-inside:avoid;
+    position:relative;border:1px solid rgba(79,165,216,.55);border-radius:14px;overflow:hidden;
+    background:#191a1c;
+    contain:layout paint style;
+  }
+  .masonry img,
+  .mobile-masonry img{
+    display:block;width:100%;height:100%;
+    object-fit:cover;
+    filter:saturate(1.02);
+  }
+  .tile-wide{aspect-ratio:4/3}
+  .tile-square{aspect-ratio:1/1}
+  .tile-tall{aspect-ratio:3/5}
+  .tile-portrait{aspect-ratio:4/5}
+  .tile-banner{aspect-ratio:5/4}
+  .tile-long{aspect-ratio:2/3}
+  .tile-base{aspect-ratio:3/4}
+  .masonry figure::after,
+  .mobile-masonry figure::after{
+    content:"";position:absolute;inset:0;
+    box-shadow:inset 0 0 0 1px rgba(79,165,216,.35);border-radius:14px;pointer-events:none;
+    transition:box-shadow .25s ease;
+  }
+  .masonry figure:hover::after,
+  .mobile-masonry figure:hover::after{
+    box-shadow:inset 0 0 0 2px rgba(79,165,216,.95), inset 0 0 22px rgba(79,165,216,.4);
+  }
+  .masonry figure:hover,
+  .mobile-masonry figure:hover{border-color:rgba(79,165,216,1)}
+  @media (max-width: 1200px){ .masonry{column-count:4} }
+  @media (max-width: 900px){ .masonry{column-count:3} }
+  @media (max-width: 640px){
+    .masonry{display:none}
+    .mobile-masonry{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:12px;
+    }
+    .mobile-masonry-column{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      min-width:0;
+    }
+    .mobile-masonry figure{
+      margin:0;
+    }
+  }
+  @media (max-width: 560px){
+    .gallery-head{grid-template-columns:1fr;align-items:start}
+    .gallery-head .meta{text-align:left}
+  }
+</style>

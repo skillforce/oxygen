@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GallerySection from '../components/GallerySection.astro';
+import HeroSection from '../components/HeroSection.astro';
+import HomeScripts from '../components/HomeScripts.astro';
+import JoinSection from '../components/JoinSection.astro';
+import ProgramsSection from '../components/ProgramsSection.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import Ticker from '../components/Ticker.astro';
+
+const title = 'Oxygen Fitness';
+const description = 'Oxygen Fitness — клуб силовых и функциональных тренировок: настоящий коучинг, реальные люди, измеримый результат.';
+---
+
+<BaseLayout title={title} description={description}>
+  <SiteHeader />
+
+  <main id="main">
+    <HeroSection />
+    <Ticker />
+    <ProgramsSection />
+    <GallerySection />
+    <JoinSection />
+  </main>
+
+  <SiteFooter />
+  <HomeScripts />
+</BaseLayout>
