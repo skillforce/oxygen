@@ -9,6 +9,9 @@
     "preview": "astro preview"
   },
   "dependencies": {
+    "@fontsource/archivo-black": "^5.2.8",
+    "@fontsource/jetbrains-mono": "^5.2.8",
+    "@fontsource/open-sans": "^5.2.7",
     "astro": "^4.16.0",
     "sharp": "^0.35.3"
   }
