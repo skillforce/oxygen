@@ -16,10 +16,12 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
 
 FROM deps AS build
 
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install --frozen-lockfile --offline
+
 COPY . .
 
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-    pnpm install --frozen-lockfile --offline && \
+RUN --mount=type=cache,id=astro-assets,target=/app/node_modules/.astro \
     pnpm build
 
 FROM nginxinc/nginx-unprivileged:stable-alpine AS runtime
