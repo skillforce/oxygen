@@ -164,7 +164,7 @@ export const priceGroups = [
     title: 'Разовые посещения',
     rows: [
       { name: 'Разовое посещение', value: '25', unit: 'руб.' },
-      { name: 'Разовое', detail: 'детский', value: '10', unit: 'руб.' },
+      { name: 'Разовое', detail: 'детский (*до 14 лет)', value: '10', unit: 'руб.' },
       { name: 'Абонемент 4 занятия', detail: '1 мес.', value: '60', unit: 'руб.' },
       { name: 'Абонемент 8 занятий', detail: '1 мес.', value: '95', unit: 'руб.' },
     ],
