@@ -4,6 +4,7 @@
 
   const vid = document.getElementById('heroVideo');
   if (vid) {
+    vid.playbackRate = 0.75;
     const revealVideo = () => vid.classList.add('ready');
     vid.addEventListener('loadeddata', revealVideo);
     vid.addEventListener('playing', revealVideo);

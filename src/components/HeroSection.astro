@@ -3,6 +3,7 @@ import { getImage } from 'astro:assets';
 import PrimaryCta from './PrimaryCta.astro';
 import { hours, site } from '../data/home';
 import machinesBrick from '../assets/images/machines-brick.avif';
+import heroVideo from '../assets/videos/hero-video.mp4';
 
 const heroPoster = await getImage({ src: machinesBrick, width: 1920, format: 'avif' });
 ---
@@ -10,7 +11,7 @@ const heroPoster = await getImage({ src: machinesBrick, width: 1920, format: 'av
 <section class="hero" id="top" aria-labelledby="hero-title">
   <div class="hero-media" aria-hidden="true" style={`--hero-poster:url('${heroPoster.src}');`}>
     <video id="heroVideo" class="hero-video" autoplay muted loop playsinline preload="metadata" poster={heroPoster.src}>
-      <source src="/images/hero-video.mp4" type="video/mp4" />
+      <source src={heroVideo} type="video/mp4" />
     </video>
   </div>
 
