@@ -44,14 +44,14 @@ import { footerClubLinks, site } from '../data/home';
     border-top:1px solid var(--rule);
   }
   .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px}
-  .foot h4{font-family:'JetBrains Mono', monospace;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:14px;font-weight:500}
+  .foot h4{font-family:var(--font-mono);font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:14px;font-weight:500}
   .foot ul{list-style:none;display:flex;flex-direction:column;gap:8px}
   .foot-summary{margin-top:14px;color:var(--ink-dim);max-width:34ch}
   .foot-address{font-style:normal}
   .foot ul a{color:var(--ink);transition:color .25s ease}
   .foot ul a:hover,.foot ul a:focus-visible{color:var(--blue)}
   .foot-big{
-    font-family:'Archivo Black';font-size:clamp(48px, 8vw, 120px);
+    font-family:var(--font-display);font-size:clamp(48px, 8vw, 120px);
     line-height:.9;letter-spacing:-.03em;text-transform:uppercase;
     margin:clamp(40px, 6vw, 72px) 0 24px;color:var(--ink);
   }

@@ -1,13 +1,6 @@
 ---
-import { Image, getImage } from 'astro:assets';
+import { Image } from 'astro:assets';
 import { programs } from '../data/home';
-
-const cards = await Promise.all(
-  programs.map(async (program) => ({
-    ...program,
-    background: await getImage({ src: program.image, width: 1080, format: 'avif' }),
-  })),
-);
 
 const cardWidths = [640, 1080, 1600];
 const cardSizes = '(max-width: 980px) 100vw, 60vw';
@@ -25,9 +18,9 @@ const cardSizes = '(max-width: 980px) 100vw, 60vw';
 
     <div class="grid">
       {
-        cards.map((program) => (
-          <a href="#join" class:list={['card image reveal', program.className]} style={`--img:url('${program.background.src}');`}>
-            <Image class="parallax-img" data-parallax src={program.image} alt={program.alt} width={1600} widths={cardWidths} sizes={cardSizes} format="avif" loading="lazy" />
+        programs.map((program) => (
+          <a href="#join" class:list={['card image reveal', program.className]}>
+            <Image class="parallax-img" src={program.image} alt={program.alt} width={1600} widths={cardWidths} sizes={cardSizes} format="avif" loading="lazy" />
             <span class="num">{program.number} / {program.label}</span>
             <h3>
               {program.title.before}<em>{program.title.emphasis}</em>{program.title.after}
@@ -56,7 +49,7 @@ const cardSizes = '(max-width: 980px) 100vw, 60vw';
   }
   .programs-head h2 em{color:var(--blue);font-style:normal}
   .programs-head .meta{text-align:right;display:flex;flex-direction:column;gap:6px}
-  .programs-head .meta b{color:var(--ink);font-weight:600;font-family:'Open Sans'}
+  .programs-head .meta b{color:var(--ink);font-weight:600;font-family:var(--font-body)}
 
   .grid{
     display:grid;
@@ -77,11 +70,11 @@ const cardSizes = '(max-width: 980px) 100vw, 60vw';
   .card:focus-visible{border-color:rgba(79,165,216,.75)}
   .card .num{
     position:absolute;top:18px;left:22px;
-    font-family:'JetBrains Mono', monospace;font-size:.76rem;
+    font-family:var(--font-mono);font-size:.76rem;
     letter-spacing:.18em;color:var(--ink-dim);
   }
   .card h3{
-    font-family:'Archivo Black';font-size:clamp(28px, 3.2vw, 44px);
+    font-family:var(--font-display);font-size:clamp(28px, 3.2vw, 44px);
     letter-spacing:-.02em;line-height:.95;text-transform:uppercase;
     margin-bottom:.4em;color:var(--ink);
   }
@@ -90,19 +83,16 @@ const cardSizes = '(max-width: 980px) 100vw, 60vw';
 
   .card.image{
     background-color:#191a1c;
-    background-image:
-      linear-gradient(180deg, rgba(10,10,11,0) 20%, rgba(10,10,11,.55) 55%, rgba(10,10,11,.94) 100%),
-      var(--img);
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
     min-height:520px;
     color:var(--ink);
   }
+  /* Photo sits below the gradient (z-index -2 vs -1) so the darkening actually
+     lands on top of it. Previously both were at -1, so the image painted over
+     the gradient and the copy relied on text-shadow alone. */
   .card.image .parallax-img{
-    position:absolute;inset:-10% 0 -10% 0;width:100%;height:120%;z-index:-1;
-    object-fit:cover;will-change:transform;
-    opacity:.88;
+    position:absolute;inset:-10% 0 -10% 0;width:100%;height:120%;z-index:-2;
+    object-fit:cover;
+    transform:scale(1.06);
   }
   .card.image::before{
     content:"";position:absolute;inset:0;z-index:-1;

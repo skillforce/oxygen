@@ -5,4 +5,10 @@ const site = publicSiteUrl.startsWith('http') ? publicSiteUrl : `https://${publi
 
 export default defineConfig({
   site,
+  build: {
+    // Single-page site: the stylesheet is a few KB gzipped and there is no
+    // repeat-navigation cache benefit to preserve, so inlining it removes a
+    // render-blocking round trip.
+    inlineStylesheets: 'always',
+  },
 });

@@ -1,17 +1,29 @@
 ---
-import { getImage } from 'astro:assets';
 import ArrowRightIcon from './icons/ArrowRightIcon.astro';
 import { hours, site } from '../data/home';
-import machinesBrick from '../assets/images/machines-brick.avif';
-import heroVideo from '../assets/videos/hero-video.mp4';
+import { getHeroPoster } from '../data/heroMedia';
+import heroVideoWebm from '../assets/videos/hero-video.webm';
+import heroVideoMp4 from '../assets/videos/hero-video.mp4';
 
-const heroPoster = await getImage({ src: machinesBrick, width: 1920, format: 'avif' });
+const heroPoster = await getHeroPoster();
 ---
 
 <section class="hero" id="top" aria-labelledby="hero-title">
-  <div class="hero-media" aria-hidden="true" style={`--hero-poster:url('${heroPoster.src}');`}>
-    <video id="heroVideo" class="hero-video" autoplay muted loop playsinline preload="metadata" poster={heroPoster.src}>
-      <source src={heroVideo} type="video/mp4" />
+  <div class="hero-media" aria-hidden="true">
+    <img
+      class="hero-poster"
+      src={heroPoster.src}
+      srcset={heroPoster.srcset}
+      sizes={heroPoster.sizes}
+      width={heroPoster.width}
+      height={heroPoster.height}
+      alt=""
+      decoding="async"
+      fetchpriority="high"
+    />
+    <video id="heroVideo" class="hero-video" muted loop playsinline preload="none">
+      <source src={heroVideoWebm} type="video/webm" />
+      <source src={heroVideoMp4} type="video/mp4" />
     </video>
   </div>
 
@@ -37,7 +49,7 @@ const heroPoster = await getImage({ src: machinesBrick, width: 1920, format: 'av
       </a>
     </div>
 
-    <table class="hours" id="hours">
+    <table class="hours">
       <caption>Время работы</caption>
       <tbody>
         {
@@ -84,7 +96,15 @@ const heroPoster = await getImage({ src: machinesBrick, width: 1920, format: 'av
     position:absolute;
     inset:0;
     z-index:-2;
-    background:#090b0d var(--hero-poster) calc(50% + 36px) 42%/cover no-repeat;
+    background:#090b0d;
+  }
+  .hero-poster{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:calc(50% + 36px) 42%;
   }
   .hero-video{
     position:absolute;
@@ -95,9 +115,8 @@ const heroPoster = await getImage({ src: machinesBrick, width: 1920, format: 'av
     object-position:center;
     opacity:0;
     transition:opacity .9s ease;
-    will-change:transform;
+    will-change:opacity;
     transform:translateX(36px) scale(1.06);
-    filter:contrast(1.09) saturate(.72) brightness(.72);
   }
   .hero-video.ready{opacity:1}
 
@@ -119,7 +138,7 @@ const heroPoster = await getImage({ src: machinesBrick, width: 1920, format: 'av
   .hero-kicker{
     margin-bottom:clamp(18px, 2.8vh, 30px);
     color:var(--blue);
-    font-family:'JetBrains Mono', monospace;
+    font-family:var(--font-mono);
     font-size:clamp(.72rem, .88vw, .92rem);
     font-weight:500;
     letter-spacing:.15em;
@@ -148,7 +167,7 @@ const heroPoster = await getImage({ src: machinesBrick, width: 1920, format: 'av
   .hero-subtitle{
     margin-top:clamp(22px, 3.2vh, 34px);
     color:rgba(236,236,234,.76);
-    font-family:'JetBrains Mono', monospace;
+    font-family:var(--font-mono);
     font-size:clamp(.76rem, .9vw, .96rem);
     font-weight:500;
     letter-spacing:.075em;
@@ -171,7 +190,7 @@ const heroPoster = await getImage({ src: machinesBrick, width: 1920, format: 'av
     gap:14px;
     white-space:nowrap;
     border-radius:999px;
-    font-family:'JetBrains Mono', monospace;
+    font-family:var(--font-mono);
     font-size:.72rem;
     font-weight:500;
     letter-spacing:.085em;
@@ -211,7 +230,7 @@ const heroPoster = await getImage({ src: machinesBrick, width: 1920, format: 'av
     margin-top:0;
     border-collapse:collapse;
     color:var(--ink);
-    font-family:'JetBrains Mono', monospace;
+    font-family:var(--font-mono);
   }
   .hours caption{
     padding-bottom:10px;
@@ -265,8 +284,8 @@ const heroPoster = await getImage({ src: machinesBrick, width: 1920, format: 'av
     .hero::before{
       background:linear-gradient(90deg, rgba(7,10,12,.96), rgba(7,10,12,.68)), linear-gradient(180deg, rgba(7,10,12,.2), transparent 38%, rgba(7,10,12,.9));
     }
-    .hero-media{background-position:58% center}
-    .hero-video{object-position:58% center;transform:none;filter:contrast(1.07) saturate(.7) brightness(.62)}
+    .hero-poster{object-position:58% center}
+    .hero-video{object-position:58% center;transform:none}
     .hero-panel{
       width:100%;
       min-height:max(680px, 100svh);

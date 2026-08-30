@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getHeroPoster } from '../data/heroMedia';
 import GallerySection from '../components/GallerySection.astro';
 import HeroSection from '../components/HeroSection.astro';
 import HomeScripts from '../components/HomeScripts.astro';
@@ -11,9 +12,22 @@ import Ticker from '../components/Ticker.astro';
 
 const title = 'Oxygen Fitness';
 const description = 'Oxygen Fitness — клуб силовых и функциональных тренировок: настоящий коучинг, реальные люди, измеримый результат.';
+
+const heroPoster = await getHeroPoster();
 ---
 
 <BaseLayout title={title} description={description}>
+  <Fragment slot="head">
+    <link
+      rel="preload"
+      as="image"
+      type="image/avif"
+      imagesrcset={heroPoster.srcset}
+      imagesizes={heroPoster.sizes}
+      fetchpriority="high"
+    />
+  </Fragment>
+
   <SiteHeader />
 
   <main id="main">

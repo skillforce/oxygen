@@ -30,11 +30,11 @@ const tickerItems = Array.from({ length: 3 });
   }
   .ticker-item{
     display:inline-flex;align-items:center;gap:48px;
-    font-family:'Archivo Black';font-size:clamp(28px, 4.4vw, 64px);
+    font-family:var(--font-display);font-size:clamp(28px, 4.4vw, 64px);
     letter-spacing:-.02em;text-transform:uppercase;color:var(--ink);
     white-space:nowrap;
   }
   .ticker-item .dot{width:14px;height:14px;border-radius:50%;background:var(--blue);flex:0 0 auto}
-  .ticker-item em{color:var(--blue);font-family:'Archivo Black';font-style:normal}
+  .ticker-item em{color:var(--blue);font-family:var(--font-display);font-style:normal}
   @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 </style>

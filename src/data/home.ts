@@ -23,7 +23,6 @@ import studioCorner from '../assets/images/studio-corner.avif';
 import studioMirror from '../assets/images/studio-mirror.avif';
 
 export const site = {
-  brand: 'OXYGEN FITNESS',
   phoneHref: 'tel:+375447257979',
   instagramHref: 'https://www.instagram.com/oxygen_fitness_/',
   instagramLabel: '@oxygen_fitness_',

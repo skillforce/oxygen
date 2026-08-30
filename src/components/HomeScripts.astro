@@ -1,13 +1,20 @@
 <script is:inline>
-  const nav = document.getElementById('nav');
-  nav?.classList.add('scrolled');
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const wideViewport = window.matchMedia('(min-width: 721px)');
 
+  // The hero video is preload="none" with no autoplay, so nothing is fetched
+  // until we opt in here. Phones and reduced-motion users keep the poster only.
   const vid = document.getElementById('heroVideo');
-  if (vid) {
-    vid.playbackRate = 0.75;
+  if (vid && wideViewport.matches && !reducedMotion.matches) {
     const revealVideo = () => vid.classList.add('ready');
+    const setRate = () => { vid.playbackRate = 0.75; };
+    vid.addEventListener('loadedmetadata', setRate);
     vid.addEventListener('loadeddata', revealVideo);
     vid.addEventListener('playing', revealVideo);
+    vid.load();
+    const started = vid.play();
+    if (started) started.catch(() => {});
   }
 
   const revealEls = document.querySelectorAll('.reveal');
@@ -26,20 +33,32 @@
     revealEls.forEach((el) => el.classList.add('is-in'));
   }
 
+  // Pointer spotlight. Measured once and refreshed on resize/scroll rather than
+  // per event, and coalesced into one rAF, so a burst of pointermove events
+  // cannot force a synchronous layout each time.
   const heroEl = document.querySelector('.hero');
-  if (heroEl) {
-    heroEl.addEventListener('pointermove', (event) => {
-      const rect = heroEl.getBoundingClientRect();
-      const x = ((event.clientX - rect.left) / rect.width) * 100;
-      const y = ((event.clientY - rect.top) / rect.height) * 100;
-      heroEl.style.setProperty('--mx', `${x}%`);
-      heroEl.style.setProperty('--my', `${y}%`);
-    });
-  }
+  if (heroEl && finePointer.matches) {
+    let rect = heroEl.getBoundingClientRect();
+    let queued = false;
+    let clientX = 0;
+    let clientY = 0;
 
-  document.querySelectorAll('[data-parallax]').forEach((el) => {
-    el.style.transform = 'scale(1.06)';
-  });
+    const remeasure = () => { rect = heroEl.getBoundingClientRect(); };
+    window.addEventListener('resize', remeasure, { passive: true });
+    window.addEventListener('scroll', remeasure, { passive: true });
+
+    heroEl.addEventListener('pointermove', (event) => {
+      clientX = event.clientX;
+      clientY = event.clientY;
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        heroEl.style.setProperty('--mx', `${((clientX - rect.left) / rect.width) * 100}%`);
+        heroEl.style.setProperty('--my', `${((clientY - rect.top) / rect.height) * 100}%`);
+      });
+    }, { passive: true });
+  }
 </script>
 
 <style is:global>
