@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Then open http://localhost:4321
+Then open [http://localhost:4321](http://localhost:4321)
 
 ## Build for production
 
@@ -18,4 +18,4 @@ npm run build
 npm run preview
 ```
 
-Images are original high-quality `.avif` files in `src/assets/images/`; the hero background is `src/assets/videos/hero-video.mp4`. Astro fingerprints the deployed media automatically for safe long-term caching.
+Images are original high-quality `.avif` files in `src/assets/images/`; the hero background is `src/assets/videos/hero-video.mp4`. Astro fingerprints the deployed media automatically for safe long-term caching.!!!!!
