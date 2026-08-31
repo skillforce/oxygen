@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import Tour360 from '../components/Tour360.astro';
+---
+
+<BaseLayout
+  title="Виртуальная экскурсия 360° — Oxygen Fitness"
+  description="Пройдите по клубу Oxygen Fitness не выходя из дома: тренажёрный зал, студия групповых занятий, раздевалки и лаунж в панорамах 360°."
+>
+  <SiteHeader hideTourLink />
+  <main id="main">
+    <Tour360 />
+  </main>
+  <SiteFooter />
+</BaseLayout>

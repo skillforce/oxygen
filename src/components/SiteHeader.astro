@@ -1,6 +1,13 @@
 ---
 import Brand from './Brand.astro';
 import { navLinks } from '../data/home';
+
+export interface Props {
+  /** Suppresses the tour link on the tour page itself. */
+  hideTourLink?: boolean;
+}
+
+const { hideTourLink = false } = Astro.props;
 ---
 
 <header class="nav">
@@ -10,10 +17,24 @@ import { navLinks } from '../data/home';
     {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
   </nav>
 
-  <a href="#join" class="nav-cta">
-    <span class="dot" aria-hidden="true"></span>
-    <span class="label-long">Пробное занятие</span>
-  </a>
+  <div class="nav-actions">
+    {
+      !hideTourLink && (
+        <a href="/tour" class="nav-tour" aria-label="Виртуальная экскурсия 360° по клубу">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 3a9 9 0 1 0 9 9M12 3a9 9 0 0 1 9 9M12 3c-2.4 2.4-3.8 5.6-3.8 9s1.4 6.6 3.8 9c2.4-2.4 3.8-5.6 3.8-9S14.4 5.4 12 3ZM3.6 8h16.8M3.6 16h16.8" />
+          </svg>
+          <span class="label-long">Экскурсия 360°</span>
+          <span class="label-short" aria-hidden="true">360°</span>
+        </a>
+      )
+    }
+
+    <a href="#join" class="nav-cta">
+      <span class="dot" aria-hidden="true"></span>
+      <span class="label-long">Пробное занятие</span>
+    </a>
+  </div>
 
 </header>
 
@@ -47,6 +68,27 @@ import { navLinks } from '../data/home';
   }
   .nav-links a:hover::after,.nav-links a:focus-visible::after{right:0}
 
+  .nav-actions{
+    display:flex;align-items:center;gap:10px;
+    min-width:0;flex-shrink:0;
+  }
+
+  .nav-tour{
+    display:inline-flex;align-items:center;gap:8px;
+    white-space:nowrap;flex-shrink:0;
+    padding:10px 16px;border:1px solid var(--rule);border-radius:999px;
+    font-family:var(--font-mono);font-size:.74rem;
+    text-transform:uppercase;letter-spacing:.14em;
+    color:var(--ink-dim);
+    transition:color .15s ease,border-color .15s ease;
+  }
+  .nav-tour svg{
+    width:15px;height:15px;flex:none;
+    fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;
+  }
+  .nav-tour:hover,.nav-tour:focus-visible{color:var(--ink);border-color:rgba(236,236,234,.34)}
+  .nav-tour .label-short{display:none}
+
   .nav-cta{
     position:relative;overflow:hidden;
     display:inline-flex;align-items:center;gap:10px;
@@ -78,19 +120,35 @@ import { navLinks } from '../data/home';
       --brand-size:clamp(15px, 4.2vw, 18px);
     }
     .nav-links{display:none}
-    .nav-cta{
+    .nav-actions{gap:8px}
+    .nav-cta,.nav-tour{
       gap:8px;
       padding:9px 14px;
       font-size:clamp(.62rem, 2.35vw, .74rem);
       letter-spacing:.11em;
     }
   }
+
+  /* Two pills plus the wordmark stop fitting well before 380px, so the tour
+     link keeps only its globe and the degree sign. */
+  @media (max-width: 560px){
+    .nav-tour{padding:9px 11px;letter-spacing:.06em}
+    .nav-tour .label-long{display:none}
+    .nav-tour .label-short{display:inline}
+  }
+
   @media (max-width: 380px){
     .nav{
-      gap:10px;
+      gap:8px;
       padding:14px var(--pad);
     }
+    .nav-actions{gap:6px}
     .nav-cta{padding:8px 12px;font-size:.62rem;letter-spacing:.08em}
     .nav-cta .label-long{display:none}
+    .nav-tour{padding:8px 10px;gap:5px;font-size:.62rem}
+  }
+
+  @media (max-width: 340px){
+    .nav-tour{padding:8px 9px;letter-spacing:.04em}
   }
 </style>

@@ -1,0 +1,436 @@
+---
+/**
+ * 360° tour of the club.
+ *
+ * Photo Sphere Viewer plus Three.js is ~600 KB of JavaScript, so none of it is
+ * in the page bundle: the viewer is dynamically imported the first time the
+ * poster is activated. Until then the section costs one image.
+ *
+ * Panorama geometry comes from the generated manifest; positions, names and
+ * links come from `src/data/tour.ts`. Arrow directions are derived from the
+ * floor plan rather than authored — see the note in that file.
+ */
+import manifest from '../data/tourManifest.json';
+import { tourNodes, tourPlan, tourStartNodeId } from '../data/tour';
+
+export interface Props {
+  title?: string;
+  /** point whose preview is used for the poster; defaults to the start node */
+  posterNodeId?: string;
+}
+
+const { title = 'Виртуальный тур по клубу', posterNodeId } = Astro.props;
+
+const { format, panoramas } = manifest as {
+  format: string;
+  panoramas: Array<{ id: string; levels: Array<{ width: number; cols: number; rows: number }> }>;
+};
+
+/** Turns an id like `T034` into `Точка T034` as a last-resort label. */
+const fallbackName = (id: string) => `Точка ${id}`;
+
+// Only panoramas that have actually been cut can be shown, and only links
+// pointing at another cut panorama are walkable — so a partially imported set
+// still produces a coherent tour instead of dead arrows.
+const available = new Set(panoramas.map((p) => p.id));
+
+const nodes = panoramas.map(({ id, levels }) => {
+  const authored = tourNodes[id];
+  return {
+    id,
+    levels,
+    name: authored?.name ?? fallbackName(id),
+    caption: authored?.caption ?? authored?.name ?? fallbackName(id),
+    x: authored?.x ?? null,
+    y: authored?.y ?? null,
+    north: authored?.north ?? 0,
+    links: (authored?.links ?? []).filter((to) => available.has(to) && to !== id),
+  };
+});
+
+const startNodeId = available.has(tourStartNodeId) ? tourStartNodeId : panoramas[0]?.id;
+const poster = posterNodeId ?? startNodeId;
+const hasPanoramas = nodes.length > 0 && Boolean(startNodeId);
+
+const tourData = { format, startNodeId, nodes, plan: tourPlan };
+---
+
+{
+  hasPanoramas && (
+    <Fragment>
+      <section class="tour" aria-labelledby="tour-title">
+        <header class="tour__head">
+          <span class="eyebrow">Экскурсия 360°</span>
+          <h1 id="tour-title" class="tour__title display">{title}</h1>
+          <p class="tour__lead">
+            {nodes.length} точек съёмки — пройдите по клубу так, будто вы уже здесь.
+          </p>
+        </header>
+
+        <div class="tour__frame">
+          <div class="tour__viewer" id="tour-viewer" hidden />
+
+          <button class="tour__poster" type="button" id="tour-start" aria-describedby="tour-title">
+            <img
+              src={`/tour/${poster}/preview.${format}`}
+              alt=""
+              width="2048"
+              height="1024"
+              fetchpriority="high"
+              decoding="async"
+            />
+            <span class="tour__cta">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M12 3a9 9 0 1 0 9 9M12 3a9 9 0 0 1 9 9M12 3c-2.5 2.4-4 5.6-4 9s1.5 6.6 4 9c2.5-2.4 4-5.6 4-9s-1.5-6.6-4-9ZM3.6 8h16.8M3.6 16h16.8" />
+              </svg>
+              Запустить тур
+              <small>{nodes.length} точек · осмотр 360°</small>
+            </span>
+          </button>
+
+          <p class="tour__fallback" id="tour-error" hidden role="status">
+            Не удалось загрузить тур. Обновите страницу или попробуйте другой браузер.
+          </p>
+        </div>
+
+        <script type="application/json" id="tour-data" set:html={JSON.stringify(tourData)} />
+      </section>
+    </Fragment>
+  )
+}
+
+<script>
+  // Static, not dynamic: `inlineStylesheets: 'always'` folds stylesheets into
+  // the HTML and emits no .css files, so a runtime `import('…css')` 404s in a
+  // production build. Importing here also means the viewer has its styles the
+  // instant its code arrives.
+  import '@photo-sphere-viewer/core/index.css';
+  import '@photo-sphere-viewer/virtual-tour-plugin/index.css';
+  import '@photo-sphere-viewer/map-plugin/index.css';
+
+  type Level = { width: number; cols: number; rows: number };
+  type Node = {
+    id: string;
+    levels: Level[];
+    name: string;
+    caption: string;
+    x: number | null;
+    y: number | null;
+    north: number;
+    links: string[];
+  };
+  type TourData = {
+    format: string;
+    startNodeId: string;
+    nodes: Node[];
+    plan: { imageUrl: string; width: number; height: number; widgetSize: string };
+  };
+
+  const dataEl = document.getElementById('tour-data');
+  const startButton = document.getElementById('tour-start');
+  const container = document.getElementById('tour-viewer');
+  const errorEl = document.getElementById('tour-error');
+
+  if (dataEl && startButton && container && errorEl) {
+    const tour: TourData = JSON.parse(dataEl.textContent ?? '{}');
+    const byId = new Map(tour.nodes.map((node) => [node.id, node]));
+    let booted = false;
+
+    /**
+     * Compass bearing from one point to another, in degrees clockwise from the
+     * top of the floor plan. Once a panorama's `north` is calibrated, its yaw
+     * uses exactly this frame, so the bearing *is* the arrow's yaw.
+     */
+    const bearing = (from: Node, to: Node) =>
+      (Math.atan2(to.x! - from.x!, -(to.y! - from.y!)) * 180) / Math.PI;
+
+    const boot = async () => {
+      if (booted) return;
+      booted = true;
+      startButton.setAttribute('aria-busy', 'true');
+
+      try {
+        const [{ Viewer }, { EquirectangularTilesAdapter }, { VirtualTourPlugin }, { MapPlugin }] =
+          await Promise.all([
+            import('@photo-sphere-viewer/core'),
+            import('@photo-sphere-viewer/equirectangular-tiles-adapter'),
+            import('@photo-sphere-viewer/virtual-tour-plugin'),
+            import('@photo-sphere-viewer/map-plugin'),
+          ]);
+        const viewerNodes = tour.nodes.map((node) => ({
+          id: node.id,
+          panorama: {
+            baseUrl: `/tour/${node.id}/preview.${tour.format}`,
+            levels: node.levels,
+            tileUrl: (col: number, row: number, level: number) =>
+              `/tour/${node.id}/${level}/${col}_${row}.${tour.format}`,
+          },
+          name: node.name,
+          caption: node.caption,
+          thumbnail: `/tour/${node.id}/thumb.${tour.format}`,
+          // Rotates the sphere so yaw 0 faces the top of the floor plan, which
+          // is what makes both the arrows and the map's view cone line up.
+          sphereCorrection: { pan: `${node.north}deg` },
+          // `false` hides the point from the map; a point with no plan
+          // coordinates would otherwise pile up in the top-left corner.
+          map: node.x === null || node.y === null ? (false as const) : { x: node.x, y: node.y },
+          links: node.links.flatMap((to) => {
+            const target = byId.get(to);
+            if (!target || target.x === null || node.x === null) return [];
+            return [
+              {
+                nodeId: to,
+                position: { yaw: `${bearing(node, target).toFixed(1)}deg`, pitch: '-12deg' },
+              },
+            ];
+          }),
+        }));
+
+        container.hidden = false;
+        startButton.hidden = true;
+        const narrow = window.innerWidth < 620;
+
+        new Viewer({
+          container: container as HTMLElement,
+          adapter: EquirectangularTilesAdapter.withConfig({ showErrorTile: false, baseBlur: true }),
+          navbar: ['zoom', 'move', 'caption', 'fullscreen'],
+          defaultZoomLvl: 40,
+          maxFov: 100,
+          touchmoveTwoFingers: false,
+          mousewheelCtrlKey: false,
+          loadingTxt: 'Загрузка…',
+          lang: {
+            zoom: 'Масштаб',
+            zoomOut: 'Отдалить',
+            zoomIn: 'Приблизить',
+            move: 'Осмотреться',
+            fullscreen: 'Во весь экран',
+            menu: 'Меню',
+            close: 'Закрыть',
+          },
+          plugins: [
+            // The plan image itself is configured on the virtual tour plugin
+            // below; MapPlugin only decides how the widget looks.
+            MapPlugin.withConfig({
+              // 260px of map on a 325px screen leaves no panorama; shrink it,
+              // and start it collapsed so the arrows are not covered — the
+              // compass button in the corner brings it back.
+              size: narrow ? '140px' : tour.plan.widgetSize,
+              visibleOnLoad: !narrow,
+              position: 'bottom left',
+              shape: 'square',
+              // Keep the plan upright and rotate only the view cone. The
+              // default spins the whole image, which turns the room labels
+              // upside down.
+              static: true,
+              minZoom: 30,
+              maxZoom: 200,
+              // Low enough that the whole floor plan is visible at a glance,
+              // which is the point of having 48 points on a map.
+              defaultZoom: 75,
+              spotStyle: {
+                size: 13,
+                color: '#8a8a84',
+                hoverSize: 19,
+                borderSize: 2,
+                borderColor: '#ffffff',
+                hoverColor: '#232427',
+              },
+            }),
+            VirtualTourPlugin.withConfig({
+              positionMode: 'manual',
+              renderMode: '3d',
+              startNodeId: tour.startNodeId,
+              nodes: viewerNodes,
+              preload: true,
+              transitionOptions: { effect: 'fade', rotation: true, speed: '15rpm' },
+              map: {
+                imageUrl: tour.plan.imageUrl,
+                size: { width: tour.plan.width, height: tour.plan.height },
+                recenter: true,
+              },
+            }),
+          ],
+        });
+
+      } catch (error) {
+        console.error('[tour] failed to start', error);
+        container.hidden = true;
+        startButton.hidden = false;
+        errorEl.hidden = false;
+        booted = false;
+      } finally {
+        startButton.removeAttribute('aria-busy');
+      }
+    };
+
+    startButton.addEventListener('click', boot);
+
+    // Warm the viewer chunk when the pointer lands on the poster, so the click
+    // itself does not wait on the network. Harmless if it never comes.
+    let warmed = false;
+    const warm = () => {
+      if (warmed || booted) return;
+      warmed = true;
+      void import('@photo-sphere-viewer/core');
+      void import('@photo-sphere-viewer/virtual-tour-plugin');
+    };
+    startButton.addEventListener('pointerenter', warm, { once: true });
+    startButton.addEventListener('focus', warm, { once: true });
+  }
+</script>
+
+<style>
+  .tour {
+    /* The header is fixed on desktop and absolute on narrow screens; either
+       way the page needs to start clear of it. */
+    padding: clamp(4.75rem, 9vw, 6.5rem) var(--pad) clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .tour__head {
+    display: grid;
+    justify-items: center;
+    gap: clamp(0.5rem, 1.6vw, 0.9rem);
+    max-width: 46rem;
+    margin: 0 auto clamp(1.25rem, 3vw, 2rem);
+    text-align: center;
+  }
+
+  .tour__title {
+    margin: 0;
+    /* Archivo Black is latin-only, so a Cyrillic title lands on Open Sans;
+       the tighter tracking of `.display` is what carries the look here. */
+    font-size: clamp(1.75rem, 5.4vw, 3.4rem);
+  }
+
+  .tour__lead {
+    margin: 0;
+    max-width: 32rem;
+    color: var(--ink-dim);
+    font-size: clamp(0.86rem, 2.4vw, 1rem);
+    line-height: 1.45;
+  }
+
+  .tour__frame {
+    position: relative;
+    width: 100%;
+    max-width: var(--maxw);
+    margin-inline: auto;
+    aspect-ratio: 16 / 9;
+    /* Keep the whole frame on screen next to the header and title on a
+       laptop, rather than pushing its bottom edge below the fold. */
+    max-height: min(calc(100dvh - 14rem), 840px);
+    overflow: hidden;
+    border-radius: clamp(0.5rem, 1.6vw, 1rem);
+    border: 1px solid var(--rule);
+    background: var(--bg-2);
+  }
+
+  .tour__viewer,
+  .tour__poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .tour__poster {
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+    color: inherit;
+    background: none;
+  }
+
+  /* `display: grid` above outranks the user-agent rule for [hidden]. */
+  .tour__poster[hidden] {
+    display: none;
+  }
+
+  .tour__poster img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* The preview is a whole sphere flattened out; blurring and dimming it
+       reads as "there is more here" rather than as a distorted photo. */
+    filter: brightness(0.5) saturate(0.9) blur(2px);
+    transform: scale(1.04); /* hides the blur's soft edge */
+  }
+
+  .tour__cta {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: 0.6rem;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: clamp(0.72rem, 2.6vw, 0.85rem);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  .tour__cta svg {
+    width: clamp(2.2rem, 8vw, 3rem);
+    height: clamp(2.2rem, 8vw, 3rem);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.1;
+    stroke-linecap: round;
+    transition: transform 200ms ease;
+  }
+
+  .tour__cta small {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-dim);
+    text-transform: none;
+  }
+
+  .tour__poster:hover .tour__cta svg,
+  .tour__poster:focus-visible .tour__cta svg {
+    transform: scale(1.08);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tour__cta svg {
+      transition: none;
+    }
+  }
+
+  .tour__fallback {
+    position: absolute;
+    inset: auto 0 1rem;
+    margin: 0;
+    padding: 0 1rem;
+    text-align: center;
+    color: var(--ink);
+    font-size: 0.85rem;
+  }
+
+  /* Portrait phones: 16/9 would leave a 180px-tall strip, which is unusable
+     for looking around. Trade width for height instead. */
+  @media (max-width: 700px) {
+    .tour__frame {
+      aspect-ratio: 3 / 4;
+      max-height: min(72dvh, 620px);
+      min-height: 24rem;
+    }
+  }
+
+  @media (max-width: 340px) {
+    .tour__frame {
+      min-height: 22rem;
+      border-radius: 0.5rem;
+    }
+    .tour__cta {
+      padding: 0.75rem 0.5rem;
+      letter-spacing: 0.1em;
+    }
+  }
+</style>

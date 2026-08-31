@@ -17,12 +17,27 @@ importers:
       '@fontsource/open-sans':
         specifier: ^5.2.7
         version: 5.2.7
+      '@photo-sphere-viewer/core':
+        specifier: ^5.15.1
+        version: 5.15.1
+      '@photo-sphere-viewer/equirectangular-tiles-adapter':
+        specifier: ^5.15.1
+        version: 5.15.1(@photo-sphere-viewer/core@5.15.1)
+      '@photo-sphere-viewer/map-plugin':
+        specifier: ^5.15.1
+        version: 5.15.1(@photo-sphere-viewer/core@5.15.1)
+      '@photo-sphere-viewer/virtual-tour-plugin':
+        specifier: ^5.15.1
+        version: 5.15.1(@photo-sphere-viewer/core@5.15.1)
       astro:
         specifier: ^4.16.0
         version: 4.16.19(rollup@4.62.2)(typescript@5.9.3)
       sharp:
         specifier: ^0.35.3
         version: 0.35.3
+      three:
+        specifier: ^0.185.1
+        version: 0.185.1
 
 packages:
 
@@ -589,6 +604,24 @@ packages:
 
   '@oslojs/encoding@1.1.0':
     resolution: {integrity: sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ==}
+
+  '@photo-sphere-viewer/core@5.15.1':
+    resolution: {integrity: sha512-nhJviczUB1xiAT/I7mGba9iDIw7DvsiK34hbR9t7kIrg9MySG33uA+a4QUk2dEOP5PjcKMj58wod8I/dQ7ePiw==}
+
+  '@photo-sphere-viewer/equirectangular-tiles-adapter@5.15.1':
+    resolution: {integrity: sha512-j3m38OjTKvUASU5V3gH8yAp9TAVqX5/LwVuxkWGI16q3eODHH/WyPVSEUN/GJX9m9y80/FweVoM8SduM9atR6Q==}
+    peerDependencies:
+      '@photo-sphere-viewer/core': 5.15.1
+
+  '@photo-sphere-viewer/map-plugin@5.15.1':
+    resolution: {integrity: sha512-ByVhRR0pbq/sEKQJfu1kVIFlAquCRpE6dtf1YtCtnwQIB+JSvRLKKPgT/vO/UOh61bfEmENiGE0KQ6D/mLyHMQ==}
+    peerDependencies:
+      '@photo-sphere-viewer/core': 5.15.1
+
+  '@photo-sphere-viewer/virtual-tour-plugin@5.15.1':
+    resolution: {integrity: sha512-9T0IZ2iyIb6yTCrP5gvb0w+SUcr5YrFurrA3M4Bk0gXdM03gRNrCxjpO2RcCiSIvGY9nXb55okP6hw5eaS10CA==}
+    peerDependencies:
+      '@photo-sphere-viewer/core': 5.15.1
 
   '@rollup/pluginutils@5.4.0':
     resolution: {integrity: sha512-MfPp06CjRLfXQ3wY0R8vJDYBy/MvVcc9OulEfR0B8Iv9ko+GCNaRZ+EpJYFl27LhKsZK0o420sYCRHCjfCgeUg==}
@@ -1629,6 +1662,9 @@ packages:
     resolution: {integrity: sha512-vavAMRXOgBVNF6nyEEmL3DBK19iRpDcoIwW+swQ+CbGiu7lju6t+JklA1MHweoWtadgt4ISVUsXLyDq34ddcwA==}
     engines: {node: '>=4'}
 
+  three@0.185.1:
+    resolution: {integrity: sha512-5aojFCXKwnjBRZvUnt3WFfEcvUJgkN5LlijRFN95hMy8WVkG4I0QNcJE+OuWvuJ0bOdStrbfXn0pkd6/QyiAlg==}
+
   tinyexec@0.3.2:
     resolution: {integrity: sha512-KQQR9yN7R5+OSwaK0XQoj22pwHoTlgYqmUscPYoknOoWCWfj/5/ABTMRi69FrKU5ffPVh5QcFikpWJI/P1ocHA==}
 
@@ -2259,6 +2295,22 @@ snapshots:
       fastq: 1.20.1
 
   '@oslojs/encoding@1.1.0': {}
+
+  '@photo-sphere-viewer/core@5.15.1':
+    dependencies:
+      three: 0.185.1
+
+  '@photo-sphere-viewer/equirectangular-tiles-adapter@5.15.1(@photo-sphere-viewer/core@5.15.1)':
+    dependencies:
+      '@photo-sphere-viewer/core': 5.15.1
+
+  '@photo-sphere-viewer/map-plugin@5.15.1(@photo-sphere-viewer/core@5.15.1)':
+    dependencies:
+      '@photo-sphere-viewer/core': 5.15.1
+
+  '@photo-sphere-viewer/virtual-tour-plugin@5.15.1(@photo-sphere-viewer/core@5.15.1)':
+    dependencies:
+      '@photo-sphere-viewer/core': 5.15.1
 
   '@rollup/pluginutils@5.4.0(rollup@4.62.2)':
     dependencies:
@@ -3629,6 +3681,8 @@ snapshots:
   strip-bom-string@1.0.0: {}
 
   strip-bom@3.0.0: {}
+
+  three@0.185.1: {}
 
   tinyexec@0.3.2: {}
 

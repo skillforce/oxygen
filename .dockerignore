@@ -17,3 +17,11 @@ yarn-error.log*
 .env.*
 !.env.example
 favicon_io
+panoramas/
+Camera01/
+panoramas-src/
+panoramas-export/
+new/
+Screenshot*.png
+*.mp4
+public/tour/.cache.json
