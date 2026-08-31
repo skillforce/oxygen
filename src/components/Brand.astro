@@ -5,14 +5,24 @@ export interface Props {
 }
 
 const {
-  href = '#top',
+  href = '/',
   label = 'Oxygen Fitness — на главную',
 } = Astro.props;
+
+// On the home page the wordmark has nowhere to lead, so it renders as plain
+// text: no link, no hover affordance, nothing to click.
+const path = Astro.url.pathname.replace(/index\.html$/, '');
+const isHome = path === '/' || path === '';
+const Tag = isHome ? 'span' : 'a';
 ---
 
-<a href={href} class="brand" aria-label={label}>
+<Tag
+  class:list={['brand', { 'brand--static': isHome }]}
+  href={isHome ? undefined : href}
+  aria-label={isHome ? undefined : label}
+>
   <span class="brand-name">O<b>X</b>YGEN FITNESS</span>
-</a>
+</Tag>
 
 <style>
   .brand{
@@ -20,6 +30,7 @@ const {
     min-width:0;
     font-family:var(--font-display);font-size:var(--brand-size, 18px);letter-spacing:.02em;
   }
+  .brand--static{cursor:default}
   .brand-name{line-height:1.12}
   .brand-name b{color:var(--blue);font-weight:inherit}
 </style>
