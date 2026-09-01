@@ -20,6 +20,7 @@ export interface Props {
 }
 
 const { title = 'Виртуальный тур по клубу', posterNodeId } = Astro.props;
+const tourAssetRevision = '20260901-3';
 
 const { format, panoramas } = manifest as {
   format: string;
@@ -52,7 +53,7 @@ const startNodeId = available.has(tourStartNodeId) ? tourStartNodeId : panoramas
 const poster = posterNodeId ?? startNodeId;
 const hasPanoramas = nodes.length > 0 && Boolean(startNodeId);
 
-const tourData = { format, startNodeId, nodes, plan: tourPlan };
+const tourData = { format, assetRevision: tourAssetRevision, startNodeId, nodes, plan: tourPlan };
 ---
 
 {
@@ -72,7 +73,7 @@ const tourData = { format, startNodeId, nodes, plan: tourPlan };
 
           <button class="tour__poster" type="button" id="tour-start" aria-describedby="tour-title">
             <img
-              src={`/tour/${poster}/preview.${format}`}
+              src={`/tour/${poster}/preview.${format}?v=${tourAssetRevision}`}
               alt=""
               width="2048"
               height="1024"
@@ -121,6 +122,7 @@ const tourData = { format, startNodeId, nodes, plan: tourPlan };
   };
   type TourData = {
     format: string;
+    assetRevision: string;
     startNodeId: string;
     nodes: Node[];
     plan: { imageUrl: string; width: number; height: number; widgetSize: string };
@@ -133,6 +135,7 @@ const tourData = { format, startNodeId, nodes, plan: tourPlan };
 
   if (dataEl && startButton && container && errorEl) {
     const tour: TourData = JSON.parse(dataEl.textContent ?? '{}');
+    const assetVersion = encodeURIComponent(tour.assetRevision);
     const byId = new Map(tour.nodes.map((node) => [node.id, node]));
     let booted = false;
 
@@ -160,14 +163,14 @@ const tourData = { format, startNodeId, nodes, plan: tourPlan };
         const viewerNodes = tour.nodes.map((node) => ({
           id: node.id,
           panorama: {
-            baseUrl: `/tour/${node.id}/preview.${tour.format}`,
+            baseUrl: `/tour/${node.id}/preview.${tour.format}?v=${assetVersion}`,
             levels: node.levels,
             tileUrl: (col: number, row: number, level: number) =>
-              `/tour/${node.id}/${level}/${col}_${row}.${tour.format}`,
+              `/tour/${node.id}/${level}/${col}_${row}.${tour.format}?v=${assetVersion}`,
           },
           name: node.name,
           caption: node.caption,
-          thumbnail: `/tour/${node.id}/thumb.${tour.format}`,
+          thumbnail: `/tour/${node.id}/thumb.${tour.format}?v=${assetVersion}`,
           // Rotates the sphere so yaw 0 faces the top of the floor plan, which
           // is what makes both the arrows and the map's view cone line up.
           sphereCorrection: { pan: `${node.north}deg` },
@@ -180,7 +183,9 @@ const tourData = { format, startNodeId, nodes, plan: tourPlan };
             return [
               {
                 nodeId: to,
-                position: { yaw: `${bearing(node, target).toFixed(1)}deg`, pitch: '-12deg' },
+                // ~20px above the old -12deg at the default zoom, so the
+                // arrows sit on the floor line instead of the viewer's feet.
+                position: { yaw: `${bearing(node, target).toFixed(1)}deg`, pitch: '-10.4deg' },
               },
             ];
           }),
@@ -239,6 +244,8 @@ const tourData = { format, startNodeId, nodes, plan: tourPlan };
             }),
             VirtualTourPlugin.withConfig({
               positionMode: 'manual',
+              // The 80x80 default reads as oversized on the narrow rooms here.
+              arrowStyle: { size: { width: 56, height: 56 } },
               renderMode: '3d',
               startNodeId: tour.startNodeId,
               nodes: viewerNodes,
