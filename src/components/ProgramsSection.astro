@@ -49,6 +49,15 @@ const cardSizes = '(max-width: 980px) 100vw, 60vw';
   }
   .programs-head h2 em{color:var(--blue);font-style:normal}
   .programs-head .meta{text-align:right;display:flex;flex-direction:column;gap:6px}
+  .programs-head .eyebrow{
+    font-size:.78rem;font-weight:700;letter-spacing:.13em;color:var(--ink);
+    text-shadow:0 1px 8px rgba(0,0,0,.6);
+  }
+  .programs-head .eyebrow::before{
+    content:"";display:inline-block;width:7px;height:7px;margin-right:9px;
+    border-radius:50%;background:var(--blue);box-shadow:0 0 10px rgba(79,165,216,.7);
+    vertical-align:1px;
+  }
   .programs-head .meta b{color:var(--ink);font-weight:600;font-family:var(--font-body)}
 
   .grid{
@@ -69,9 +78,16 @@ const cardSizes = '(max-width: 980px) 100vw, 60vw';
   .card:hover{transform:translateY(-4px);border-color:rgba(79,165,216,.45)}
   .card:focus-visible{border-color:rgba(79,165,216,.75)}
   .card .num{
-    position:absolute;top:18px;left:22px;
-    font-family:var(--font-mono);font-size:.76rem;
-    letter-spacing:.18em;color:var(--ink-dim);
+    position:absolute;z-index:2;top:18px;left:22px;
+    padding:9px 13px;
+    border:1px solid rgba(255,255,255,.3);border-radius:999px;
+    font-family:var(--font-mono);font-size:.78rem;font-weight:700;
+    line-height:1;letter-spacing:.1em;color:#fff;
+    background:linear-gradient(135deg, rgba(47,134,191,.9), rgba(10,20,27,.88) 72%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.2), 0 5px 18px rgba(0,0,0,.36);
+    text-shadow:0 1px 3px rgba(0,0,0,.75);
+    backdrop-filter:blur(8px) saturate(140%);
+    -webkit-backdrop-filter:blur(8px) saturate(140%);
   }
   .card h3{
     font-family:var(--font-display);font-size:clamp(28px, 3.2vw, 44px);

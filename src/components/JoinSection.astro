@@ -81,6 +81,16 @@ import { plans, priceGroups, site } from '../data/home';
       radial-gradient(50% 50% at 10% 90%, rgba(79,165,216,.3), transparent 70%);
   }
   .join .wrap{position:relative;z-index:1}
+  .join header .eyebrow{
+    display:inline-block;font-size:.78rem;font-weight:700;
+    letter-spacing:.13em;color:var(--ink);
+    text-shadow:0 1px 8px rgba(0,0,0,.6);
+  }
+  .join header .eyebrow::before{
+    content:"";display:inline-block;width:7px;height:7px;margin-right:9px;
+    border-radius:50%;background:var(--blue);box-shadow:0 0 10px rgba(79,165,216,.7);
+    vertical-align:1px;
+  }
   .join h2{
     font-size:clamp(56px, 12vw, 200px);
     color:var(--ink);

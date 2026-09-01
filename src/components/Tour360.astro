@@ -282,33 +282,116 @@ const tourData = { format, startNodeId, nodes, plan: tourPlan };
 
 <style>
   .tour {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     /* The header is fixed on desktop and absolute on narrow screens; either
        way the page needs to start clear of it. */
     padding: clamp(4.75rem, 9vw, 6.5rem) var(--pad) clamp(2.5rem, 6vw, 4.5rem);
+    background:
+      radial-gradient(46rem 28rem at 18% 4%, rgba(79, 165, 216, 0.18), transparent 66%),
+      radial-gradient(38rem 24rem at 86% 20%, rgba(47, 134, 191, 0.14), transparent 68%),
+      linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 58%);
+  }
+
+  .tour::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 3.5rem;
+    left: 50%;
+    width: min(88vw, 70rem);
+    height: 24rem;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: rgba(79, 165, 216, 0.12);
+    filter: blur(70px);
+    pointer-events: none;
   }
 
   .tour__head {
+    position: relative;
+    overflow: hidden;
     display: grid;
     justify-items: center;
-    gap: clamp(0.5rem, 1.6vw, 0.9rem);
-    max-width: 46rem;
-    margin: 0 auto clamp(1.25rem, 3vw, 2rem);
+    gap: clamp(0.8rem, 1.8vw, 1.15rem);
+    max-width: 64rem;
+    margin: 0 auto clamp(1.5rem, 3vw, 2.25rem);
+    padding: clamp(1.6rem, 4vw, 3.25rem) clamp(1rem, 5vw, 4.5rem);
     text-align: center;
+    border: 1px solid rgba(236, 236, 234, 0.22);
+    border-radius: clamp(1.1rem, 3vw, 2rem);
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.025) 48%, rgba(79, 165, 216, 0.08)),
+      rgba(26, 27, 29, 0.68);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(79, 165, 216, 0.1),
+      0 24px 70px rgba(0, 0, 0, 0.3),
+      0 0 45px rgba(79, 165, 216, 0.1);
+    backdrop-filter: blur(22px) saturate(145%);
+    -webkit-backdrop-filter: blur(22px) saturate(145%);
+  }
+
+  .tour__head::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.07) 43%, transparent 62%);
+    pointer-events: none;
+  }
+
+  .tour__head .eyebrow {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.55rem 0.85rem;
+    border: 1px solid rgba(255, 255, 255, 0.48);
+    border-radius: 999px;
+    color: #031018;
+    background: linear-gradient(120deg, var(--blue-deep), #8ed2f4 58%, var(--blue));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 6px 22px rgba(47, 134, 191, 0.32);
+    font-size: clamp(0.68rem, 2vw, 0.76rem);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+  }
+
+  .tour__head .eyebrow::before {
+    content: '';
+    width: 0.45rem;
+    height: 0.45rem;
+    flex: none;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 0 4px rgba(3, 16, 24, 0.12);
   }
 
   .tour__title {
+    position: relative;
+    z-index: 1;
     margin: 0;
-    /* Archivo Black is latin-only, so a Cyrillic title lands on Open Sans;
-       the tighter tracking of `.display` is what carries the look here. */
-    font-size: clamp(1.75rem, 5.4vw, 3.4rem);
+    max-width: 15ch;
+    color: #f7f8f8;
+    font-size: clamp(2.15rem, 6.5vw, 5.2rem);
+    font-weight: 700;
+    line-height: 0.94;
+    letter-spacing: -0.055em;
+    text-wrap: balance;
+    text-shadow: 0 3px 22px rgba(0, 0, 0, 0.42);
   }
 
   .tour__lead {
+    position: relative;
+    z-index: 1;
     margin: 0;
-    max-width: 32rem;
-    color: var(--ink-dim);
-    font-size: clamp(0.86rem, 2.4vw, 1rem);
-    line-height: 1.45;
+    max-width: 40rem;
+    color: #dfe1e3;
+    font-size: clamp(0.92rem, 2.4vw, 1.08rem);
+    font-weight: 600;
+    line-height: 1.5;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
   }
 
   .tour__frame {
@@ -321,9 +404,10 @@ const tourData = { format, startNodeId, nodes, plan: tourPlan };
        laptop, rather than pushing its bottom edge below the fold. */
     max-height: min(calc(100dvh - 14rem), 840px);
     overflow: hidden;
-    border-radius: clamp(0.5rem, 1.6vw, 1rem);
-    border: 1px solid var(--rule);
+    border-radius: clamp(0.85rem, 2vw, 1.4rem);
+    border: 1px solid rgba(236, 236, 234, 0.24);
     background: var(--bg-2);
+    box-shadow: 0 22px 65px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(79, 165, 216, 0.08);
   }
 
   .tour__viewer,
@@ -342,6 +426,16 @@ const tourData = { format, startNodeId, nodes, plan: tourPlan };
     cursor: pointer;
     color: inherit;
     background: none;
+  }
+
+  .tour__poster::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(79, 165, 216, 0.08), transparent 35%),
+      linear-gradient(180deg, rgba(8, 12, 15, 0.08), rgba(8, 12, 15, 0.35));
+    pointer-events: none;
   }
 
   /* `display: grid` above outranks the user-agent rule for [hidden]. */
@@ -363,41 +457,65 @@ const tourData = { format, startNodeId, nodes, plan: tourPlan };
 
   .tour__cta {
     position: relative;
+    z-index: 1;
     display: grid;
     justify-items: center;
-    gap: 0.6rem;
-    padding: 1rem 1.5rem;
+    gap: 0.72rem;
+    min-width: min(18rem, calc(100% - 2rem));
+    padding: 1.25rem 1.7rem 1.1rem;
     text-align: center;
-    color: var(--ink);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    border-radius: 1.35rem;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(16, 22, 27, 0.66));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 16px 45px rgba(0, 0, 0, 0.38);
+    backdrop-filter: blur(18px) saturate(145%);
+    -webkit-backdrop-filter: blur(18px) saturate(145%);
     font-family: var(--font-mono);
     font-size: clamp(0.72rem, 2.6vw, 0.85rem);
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
+    transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
   }
 
   .tour__cta svg {
-    width: clamp(2.2rem, 8vw, 3rem);
-    height: clamp(2.2rem, 8vw, 3rem);
+    width: clamp(3.5rem, 10vw, 4.25rem);
+    height: clamp(3.5rem, 10vw, 4.25rem);
+    padding: 0.8rem;
+    color: #041119;
     fill: none;
     stroke: currentColor;
-    stroke-width: 1.1;
+    stroke-width: 1.45;
     stroke-linecap: round;
+    border: 1px solid rgba(255, 255, 255, 0.58);
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue-deep), #9bddfa 58%, var(--blue));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.62), 0 8px 24px rgba(47, 134, 191, 0.42);
     transition: transform 200ms ease;
   }
 
   .tour__cta small {
     font-size: 0.7rem;
     letter-spacing: 0.1em;
-    color: var(--ink-dim);
+    color: #d7dade;
     text-transform: none;
+  }
+
+  .tour__poster:hover .tour__cta,
+  .tour__poster:focus-visible .tour__cta {
+    transform: translateY(-3px);
+    border-color: rgba(142, 210, 244, 0.72);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 20px 55px rgba(0, 0, 0, 0.42), 0 0 28px rgba(79, 165, 216, 0.22);
   }
 
   .tour__poster:hover .tour__cta svg,
   .tour__poster:focus-visible .tour__cta svg {
-    transform: scale(1.08);
+    transform: rotate(8deg) scale(1.08);
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .tour__cta,
     .tour__cta svg {
       transition: none;
     }
@@ -416,6 +534,19 @@ const tourData = { format, startNodeId, nodes, plan: tourPlan };
   /* Portrait phones: 16/9 would leave a 180px-tall strip, which is unusable
      for looking around. Trade width for height instead. */
   @media (max-width: 700px) {
+    .tour {
+      padding-top: 4.6rem;
+    }
+
+    .tour__head {
+      padding: 1.5rem 1rem 1.65rem;
+      border-radius: 1.2rem;
+    }
+
+    .tour__title {
+      font-size: clamp(2rem, 11vw, 3.3rem);
+    }
+
     .tour__frame {
       aspect-ratio: 3 / 4;
       max-height: min(72dvh, 620px);
