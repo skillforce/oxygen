@@ -1,9 +1,14 @@
 /**
  * Runtime configuration for the production tour and its floor plan.
  *
+ * Hand-maintained: a point's place on the plan, its links and its arrow
+ * offsets are all judged against the panoramas, not computed.
+ *
  * Arrow directions are derived at runtime from x/y: the
  * bearing from one point to its neighbour on the plan is the arrow's yaw. Move
- * a point and every arrow into and out of it follows.
+ * a point and every arrow into and out of it follows. `arrows` nudges an arrow
+ * off that bearing, for the link whose doorway is not on the straight line
+ * between the two points; every link carries one, 0 where the bearing is right.
  *
  * `north` is the one number that cannot be derived: how far the panorama is
  * rotated relative to the plan. 0 means the panorama's yaw 0 already faces the
@@ -20,6 +25,12 @@ export type TourNode = {
   north: number;
   /** ids this point can walk to; links are reciprocal by construction */
   links: string[];
+  /**
+   * Per-link nudge in degrees on top of the derived bearing, clockwise, aimed
+   * by dragging the arrow in the editor. One entry per link: 0 means the plain
+   * bearing points at the doorway, anything else that it does not.
+   */
+  arrows?: Record<string, number>;
 };
 
 export const tourPlan = {
@@ -29,40 +40,26 @@ export const tourPlan = {
   widgetSize: '260px',
 } as const;
 
-export const tourStartNodeId = 'T008';
+export const tourStartNodeId = 'P02';
 
 export const tourNodes: Record<string, TourNode> = {
-  T008: { name: 'Ресепшен', caption: 'Ресепшен и зона лобби', x: 156, y: 408, north: 182, links: ['T010', 'T012', 'T078'] },
-  T010: { name: 'Ресепшен', caption: 'Ресепшен и зона лобби', x: 74, y: 460, north: 182, links: ['T008'] },
-  T012: { name: 'Ресепшен', caption: 'Ресепшен и зона лобби', x: 234, y: 362, north: 6, links: ['T008', 'T015', 'T023'] },
-  T015: { name: 'Коридор к раздевалке', caption: 'Коридор вдоль туалета к женской раздевалке', x: 220, y: 260, north: 14, links: ['T012', 'T016', 'T017'] },
-  T016: { name: 'Санузел', caption: 'Санузел за ресепшеном', x: 128, y: 242, north: 360, links: ['T015'] },
-  T017: { name: 'Вход в раздевалку', caption: 'Тамбур женской раздевалки', x: 218, y: 192, north: 355, links: ['T015', 'T018', 'T019'] },
-  T018: { name: 'Женская душевая', caption: 'Женская душевая — первая дверь в раздевалке', x: 98, y: 164, north: 19, links: ['T017'] },
-  T019: { name: 'Женская раздевалка', caption: 'Женская раздевалка', x: 216, y: 116, north: 71, links: ['T017', 'T021'] },
-  T021: { name: 'Женская раздевалка', caption: 'Женская раздевалка', x: 114, y: 80, north: 236, links: ['T019'] },
-  T023: { name: 'Коридор между раздевалками', caption: 'Коридор между женской и мужской раздевалками', x: 324, y: 310, north: 265, links: ['T012', 'T025', 'T027'] },
-  T025: { name: 'Зал групповых занятий', caption: 'Студия групповых программ', x: 316, y: 210, north: 357, links: ['T023'] },
-  T027: { name: 'Коридор между раздевалками', caption: 'Коридор между женской и мужской раздевалками', x: 464, y: 312, north: 270, links: ['T023', 'T028'] },
-  T028: { name: 'Коридор между раздевалками', caption: 'Коридор между женской и мужской раздевалками', x: 688, y: 318, north: 357, links: ['T027', 'T030', 'T035'] },
-  T030: { name: 'Мужская раздевалка', caption: 'Мужская раздевалка', x: 648, y: 216, north: 359, links: ['T028', 'T033'] },
-  T032: { name: 'Мужская душевая', caption: 'Мужская душевая — единственный вход из раздевалки', x: 722, y: 172, north: 360, links: ['T033'] },
-  T033: { name: 'Мужская раздевалка', caption: 'Мужская раздевалка — выход в зал', x: 684, y: 172, north: 3, links: ['T030', 'T032'] },
-  T035: { name: 'Функциональная зона', caption: 'Тренажёрный зал — функциональная зона', x: 692, y: 398, north: 182, links: ['T028', 'T038', 'T061'] },
-  T038: { name: 'Функциональная зона', caption: 'Тренажёрный зал — функциональная зона', x: 698, y: 566, north: 182, links: ['T035', 'T059', 'T067'] },
-  T042: { name: 'Центральные тренажёры', caption: 'Тренажёрный зал — центральные тренажёры', x: 574, y: 674, north: 92, links: ['T044', 'T066', 'T067'] },
-  T044: { name: 'Центральные тренажёры', caption: 'Тренажёрный зал — центральные тренажёры', x: 366, y: 676, north: 356, links: ['T042', 'T070'] },
-  T049: { name: 'Центральные тренажёры', caption: 'Тренажёрный зал — центральные тренажёры', x: 306, y: 462, north: 359, links: ['T051'] },
-  T051: { name: 'Рама и дорожки', caption: 'Тренажёрный зал — силовая рама и беговые дорожки', x: 304, y: 578, north: 354, links: ['T049', 'T070'] },
-  T059: { name: 'Рама и дорожки', caption: 'Тренажёрный зал — силовая рама и беговые дорожки', x: 764, y: 482, north: 358, links: ['T038'] },
-  T061: { name: 'Рама и дорожки', caption: 'Тренажёрный зал — силовая рама и беговые дорожки', x: 764, y: 376, north: 358, links: ['T035'] },
-  T062: { name: 'Силовые тренажёры', caption: 'Тренажёрный зал — силовые тренажёры', x: 582, y: 474, north: 2, links: ['T064'] },
-  T064: { name: 'Силовые тренажёры', caption: 'Тренажёрный зал — силовые тренажёры', x: 584, y: 548, north: 358, links: ['T062', 'T066'] },
-  T066: { name: 'Силовые тренажёры', caption: 'Тренажёрный зал — силовые тренажёры', x: 516, y: 624, north: 356, links: ['T042', 'T064'] },
-  T067: { name: 'Силовые тренажёры', caption: 'Тренажёрный зал — силовые тренажёры', x: 718, y: 672, north: 87, links: ['T038', 'T042'] },
-  T070: { name: 'Силовые тренажёры', caption: 'Тренажёрный зал — силовые тренажёры', x: 262, y: 640, north: 4, links: ['T044', 'T051', 'T073'] },
-  T073: { name: 'Свободные веса', caption: 'Тренажёрный зал — зона свободных весов', x: 158, y: 682, north: 35, links: ['T070', 'T075'] },
-  T075: { name: 'Свободные веса', caption: 'Тренажёрный зал — зона свободных весов', x: 82, y: 624, north: 34, links: ['T073', 'T077'] },
-  T077: { name: 'Переход в лаунж', caption: 'Переход из зала в лаунж', x: 80, y: 546, north: 355, links: ['T075'] },
-  T078: { name: 'Лаунж', caption: 'Лаунж и зона ожидания', x: 232, y: 488, north: 1, links: ['T008'] },
+  P02: { name: 'Лаунж', caption: 'Лаунж и фитнес-бар у ресепшена', x: 158, y: 397, north: 24, links: ['P18'], arrows: { P18: -30 } },
+  P03: { name: 'Студия', caption: 'Зал групповых программ', x: 361, y: 230, north: 185, links: ['P18'], arrows: { P18: 139 } },
+  P04: { name: 'Функциональная зона', caption: 'Вход в зал — функциональная зона', x: 649, y: 357, north: 182, links: ['P05', 'P08', 'P18'], arrows: { P05: -176, P08: 175, P18: -175 } },
+  P05: { name: 'Мужская раздевалка', caption: 'Мужская раздевалка', x: 649, y: 229, north: 8, links: ['P04', 'P07'], arrows: { P04: -10, P07: -55 } },
+  P07: { name: 'Мужская душевая', caption: 'Мужская душевая', x: 742, y: 188, north: 0, links: ['P05'], arrows: { P05: -72 } },
+  P08: { name: 'Функциональная зона', caption: 'Тренажёрный зал — функциональная зона', x: 646, y: 468, north: 0, links: ['P04', 'P09', 'P10', 'P11'], arrows: { P04: -179, P09: 174, P10: 177, P11: 177 } },
+  P09: { name: 'Функциональная зона', caption: 'Силовая рама и зона функционального тренинга', x: 748, y: 473, north: 0, links: ['P08'], arrows: { P08: 178 } },
+  P10: { name: 'Блочные тренажёры', caption: 'Тренажёрный зал — блочные тренажёры', x: 417, y: 421, north: 0, links: ['P08', 'P12'], arrows: { P08: 178, P12: 175 } },
+  P11: { name: 'Силовые тренажёры', caption: 'Тренажёрный зал — силовые тренажёры', x: 644, y: 595, north: 0, links: ['P08', 'P12', 'P16'], arrows: { P08: -180, P12: -180, P16: -178 } },
+  P12: { name: 'Силовая рама', caption: 'Тренажёрный зал — силовая рама и скамьи', x: 414, y: 593, north: 0, links: ['P10', 'P11', 'P13', 'P15'], arrows: { P10: -177, P11: -174, P13: -170, P15: -176 } },
+  P13: { name: 'Свободные веса', caption: 'Тренажёрный зал — зона свободных весов', x: 186, y: 586, north: 0, links: ['P12', 'P14'], arrows: { P12: -177, P14: -177 } },
+  P14: { name: 'Кроссоверы', caption: 'Тренажёрный зал — кроссоверы', x: 187, y: 672, north: 0, links: ['P13', 'P15'], arrows: { P13: 175, P15: -175 } },
+  P15: { name: 'Беговые дорожки', caption: 'Кардиозона — беговые дорожки', x: 417, y: 669, north: 0, links: ['P12', 'P14', 'P16'], arrows: { P12: 175, P14: 179, P16: 179 } },
+  P16: { name: 'Беговые дорожки', caption: 'Кардиозона — беговые дорожки', x: 644, y: 666, north: 10, links: ['P11', 'P15', 'P17'], arrows: { P11: 174, P15: 178, P17: 174 } },
+  P17: { name: 'Зона бокса', caption: 'Зона бокса и велотренажёров', x: 741, y: 668, north: 0, links: ['P16'], arrows: { P16: 179 } },
+  P18: { name: 'Коридор', caption: 'Коридор между лаунжем и раздевалками', x: 228, y: 327, north: 355, links: ['P02', 'P03', 'P04', 'P19'], arrows: { P02: 0, P03: 0, P04: -1, P19: 0 } },
+  P19: { name: 'Женская раздевалка', caption: 'Женская раздевалка', x: 227, y: 95, north: 262, links: ['P18', 'P21'], arrows: { P18: 84, P21: 93 } },
+  P21: { name: 'Женская раздевалка', caption: 'Женская раздевалка', x: 109, y: 111, north: 15, links: ['P19', 'P22'], arrows: { P19: 108, P22: 41 } },
+  P22: { name: 'Женская душевая', caption: 'Женская душевая', x: 94, y: 162, north: 0, links: ['P21'], arrows: { P21: 104 } },
 };

@@ -23,12 +23,15 @@ node_modules/
 
 # Camera dump, the frames selected from it, and the Studio exports.
 /Camera01/
+/photo/
 /panoramas-src/
 /panoramas-export/
 
 # Studio exports awaiting import.
 /new/
+/exported/
 /Screenshot*.png
+/img*.png
 
 # Local panorama-processing metadata is never part of the deployed tour.
 /public/tour/.cache.json

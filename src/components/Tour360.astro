@@ -20,36 +20,37 @@ export interface Props {
 }
 
 const { title = 'Виртуальный тур по клубу', posterNodeId } = Astro.props;
-const tourAssetRevision = '20260901-3';
+const tourAssetRevision = '20260908-1';
 
 const { format, panoramas } = manifest as {
   format: string;
   panoramas: Array<{ id: string; levels: Array<{ width: number; cols: number; rows: number }> }>;
 };
 
-/** Turns an id like `T034` into `Точка T034` as a last-resort label. */
-const fallbackName = (id: string) => `Точка ${id}`;
+// A stop needs both halves: tiles that have been cut and a position authored in
+// the editor. A panorama with only tiles would sit off the map with no arrows
+// in or out — cutting tiles is not the same as putting a point on the route —
+// so a half-imported or half-placed set still yields a coherent tour.
+const available = new Set(panoramas.map((p) => p.id).filter((id) => tourNodes[id]));
 
-// Only panoramas that have actually been cut can be shown, and only links
-// pointing at another cut panorama are walkable — so a partially imported set
-// still produces a coherent tour instead of dead arrows.
-const available = new Set(panoramas.map((p) => p.id));
+const nodes = panoramas
+  .filter(({ id }) => available.has(id))
+  .map(({ id, levels }) => {
+    const authored = tourNodes[id];
+    return {
+      id,
+      levels,
+      name: authored.name,
+      caption: authored.caption || authored.name,
+      x: authored.x,
+      y: authored.y,
+      north: authored.north,
+      links: authored.links.filter((to) => available.has(to) && to !== id),
+      arrows: authored.arrows ?? {},
+    };
+  });
 
-const nodes = panoramas.map(({ id, levels }) => {
-  const authored = tourNodes[id];
-  return {
-    id,
-    levels,
-    name: authored?.name ?? fallbackName(id),
-    caption: authored?.caption ?? authored?.name ?? fallbackName(id),
-    x: authored?.x ?? null,
-    y: authored?.y ?? null,
-    north: authored?.north ?? 0,
-    links: (authored?.links ?? []).filter((to) => available.has(to) && to !== id),
-  };
-});
-
-const startNodeId = available.has(tourStartNodeId) ? tourStartNodeId : panoramas[0]?.id;
+const startNodeId = available.has(tourStartNodeId) ? tourStartNodeId : nodes[0]?.id;
 const poster = posterNodeId ?? startNodeId;
 const hasPanoramas = nodes.length > 0 && Boolean(startNodeId);
 
@@ -119,6 +120,8 @@ const tourData = { format, assetRevision: tourAssetRevision, startNodeId, nodes,
     y: number | null;
     north: number;
     links: string[];
+    /** per-link nudge in degrees on top of the derived bearing */
+    arrows: Record<string, number>;
   };
   type TourData = {
     format: string;
@@ -146,6 +149,9 @@ const tourData = { format, assetRevision: tourAssetRevision, startNodeId, nodes,
      */
     const bearing = (from: Node, to: Node) =>
       (Math.atan2(to.x! - from.x!, -(to.y! - from.y!)) * 180) / Math.PI;
+
+    /** The bearing plus whatever the editor nudged this one arrow by. */
+    const arrowYaw = (from: Node, to: Node) => bearing(from, to) + (from.arrows[to.id] ?? 0);
 
     const boot = async () => {
       if (booted) return;
@@ -185,7 +191,7 @@ const tourData = { format, assetRevision: tourAssetRevision, startNodeId, nodes,
                 nodeId: to,
                 // ~20px above the old -12deg at the default zoom, so the
                 // arrows sit on the floor line instead of the viewer's feet.
-                position: { yaw: `${bearing(node, target).toFixed(1)}deg`, pitch: '-10.4deg' },
+                position: { yaw: `${arrowYaw(node, target).toFixed(1)}deg`, pitch: '-10.4deg' },
               },
             ];
           }),

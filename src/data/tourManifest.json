@@ -2,7 +2,7 @@
   "format": "webp",
   "panoramas": [
     {
-      "id": "T008",
+      "id": "P01",
       "format": "webp",
       "levels": [
         {
@@ -11,16 +11,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T010",
+      "id": "P02",
       "format": "webp",
       "levels": [
         {
@@ -29,16 +29,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T012",
+      "id": "P03",
       "format": "webp",
       "levels": [
         {
@@ -47,16 +47,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T015",
+      "id": "P04",
       "format": "webp",
       "levels": [
         {
@@ -65,16 +65,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T016",
+      "id": "P05",
       "format": "webp",
       "levels": [
         {
@@ -83,16 +83,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T017",
+      "id": "P06",
       "format": "webp",
       "levels": [
         {
@@ -101,16 +101,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T018",
+      "id": "P07",
       "format": "webp",
       "levels": [
         {
@@ -119,16 +119,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T019",
+      "id": "P08",
       "format": "webp",
       "levels": [
         {
@@ -137,16 +137,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T021",
+      "id": "P09",
       "format": "webp",
       "levels": [
         {
@@ -155,16 +155,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T023",
+      "id": "P10",
       "format": "webp",
       "levels": [
         {
@@ -173,16 +173,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T025",
+      "id": "P11",
       "format": "webp",
       "levels": [
         {
@@ -191,16 +191,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T027",
+      "id": "P12",
       "format": "webp",
       "levels": [
         {
@@ -209,16 +209,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T028",
+      "id": "P13",
       "format": "webp",
       "levels": [
         {
@@ -227,16 +227,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T030",
+      "id": "P14",
       "format": "webp",
       "levels": [
         {
@@ -245,16 +245,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T032",
+      "id": "P15",
       "format": "webp",
       "levels": [
         {
@@ -263,16 +263,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T033",
+      "id": "P16",
       "format": "webp",
       "levels": [
         {
@@ -281,16 +281,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T035",
+      "id": "P17",
       "format": "webp",
       "levels": [
         {
@@ -299,16 +299,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T038",
+      "id": "P18",
       "format": "webp",
       "levels": [
         {
@@ -317,16 +317,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T042",
+      "id": "P19",
       "format": "webp",
       "levels": [
         {
@@ -335,16 +335,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T044",
+      "id": "P20",
       "format": "webp",
       "levels": [
         {
@@ -353,16 +353,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T049",
+      "id": "P21",
       "format": "webp",
       "levels": [
         {
@@ -371,16 +371,16 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     },
     {
-      "id": "T051",
+      "id": "P22",
       "format": "webp",
       "levels": [
         {
@@ -389,211 +389,13 @@
           "rows": 2
         },
         {
-          "width": 4320,
+          "width": 5952,
           "cols": 8,
           "rows": 4
         }
       ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
-    },
-    {
-      "id": "T059",
-      "format": "webp",
-      "levels": [
-        {
-          "width": 1080,
-          "cols": 4,
-          "rows": 2
-        },
-        {
-          "width": 4320,
-          "cols": 8,
-          "rows": 4
-        }
-      ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
-    },
-    {
-      "id": "T061",
-      "format": "webp",
-      "levels": [
-        {
-          "width": 1080,
-          "cols": 4,
-          "rows": 2
-        },
-        {
-          "width": 4320,
-          "cols": 8,
-          "rows": 4
-        }
-      ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
-    },
-    {
-      "id": "T062",
-      "format": "webp",
-      "levels": [
-        {
-          "width": 1080,
-          "cols": 4,
-          "rows": 2
-        },
-        {
-          "width": 4320,
-          "cols": 8,
-          "rows": 4
-        }
-      ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
-    },
-    {
-      "id": "T064",
-      "format": "webp",
-      "levels": [
-        {
-          "width": 1080,
-          "cols": 4,
-          "rows": 2
-        },
-        {
-          "width": 4320,
-          "cols": 8,
-          "rows": 4
-        }
-      ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
-    },
-    {
-      "id": "T066",
-      "format": "webp",
-      "levels": [
-        {
-          "width": 1080,
-          "cols": 4,
-          "rows": 2
-        },
-        {
-          "width": 4320,
-          "cols": 8,
-          "rows": 4
-        }
-      ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
-    },
-    {
-      "id": "T067",
-      "format": "webp",
-      "levels": [
-        {
-          "width": 1080,
-          "cols": 4,
-          "rows": 2
-        },
-        {
-          "width": 4320,
-          "cols": 8,
-          "rows": 4
-        }
-      ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
-    },
-    {
-      "id": "T070",
-      "format": "webp",
-      "levels": [
-        {
-          "width": 1080,
-          "cols": 4,
-          "rows": 2
-        },
-        {
-          "width": 4320,
-          "cols": 8,
-          "rows": 4
-        }
-      ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
-    },
-    {
-      "id": "T073",
-      "format": "webp",
-      "levels": [
-        {
-          "width": 1080,
-          "cols": 4,
-          "rows": 2
-        },
-        {
-          "width": 4320,
-          "cols": 8,
-          "rows": 4
-        }
-      ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
-    },
-    {
-      "id": "T075",
-      "format": "webp",
-      "levels": [
-        {
-          "width": 1080,
-          "cols": 4,
-          "rows": 2
-        },
-        {
-          "width": 4320,
-          "cols": 8,
-          "rows": 4
-        }
-      ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
-    },
-    {
-      "id": "T077",
-      "format": "webp",
-      "levels": [
-        {
-          "width": 1080,
-          "cols": 4,
-          "rows": 2
-        },
-        {
-          "width": 4320,
-          "cols": 8,
-          "rows": 4
-        }
-      ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
-    },
-    {
-      "id": "T078",
-      "format": "webp",
-      "levels": [
-        {
-          "width": 1080,
-          "cols": 4,
-          "rows": 2
-        },
-        {
-          "width": 4320,
-          "cols": 8,
-          "rows": 4
-        }
-      ],
-      "sourceWidth": 4320,
-      "sourceHeight": 2160
+      "sourceWidth": 5952,
+      "sourceHeight": 2976
     }
   ]
 }

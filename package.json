@@ -6,7 +6,9 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build && node scripts/precompress.mjs",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "tour:import": "node scripts/tour-import.mjs",
+    "tour:tiles": "node scripts/tour-tiles.mjs"
   },
   "dependencies": {
     "@fontsource/archivo-black": "^5.2.8",
