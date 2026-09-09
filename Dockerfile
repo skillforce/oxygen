@@ -11,8 +11,10 @@ RUN corepack enable
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
+# `fetch` resolves from the lockfile by definition; the flag only existed to
+# say so, and pnpm 12 rejects it outright.
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-    pnpm fetch --frozen-lockfile
+    pnpm fetch
 
 FROM deps AS build
 
