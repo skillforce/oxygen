@@ -17,19 +17,6 @@ node_modules/
 # raw media dropped at the repository root
 /*.mp4
 
-# Raw panorama exports stay local; only the production-ready tiles in
-# public/tour/ belong in the repository.
-/panoramas/
-
-# Camera dump, the frames selected from it, and the Studio exports.
-/Camera01/
-/photo/
-/panoramas-src/
-/panoramas-export/
-
-# Studio exports awaiting import.
-/new/
-/exported/
 /Screenshot*.png
 /img*.png
 

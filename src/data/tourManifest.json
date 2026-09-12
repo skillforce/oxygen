@@ -2,24 +2,6 @@
   "format": "webp",
   "panoramas": [
     {
-      "id": "P01",
-      "format": "webp",
-      "levels": [
-        {
-          "width": 1080,
-          "cols": 4,
-          "rows": 2
-        },
-        {
-          "width": 5952,
-          "cols": 8,
-          "rows": 4
-        }
-      ],
-      "sourceWidth": 5952,
-      "sourceHeight": 2976
-    },
-    {
       "id": "P02",
       "format": "webp",
       "levels": [
@@ -75,24 +57,6 @@
     },
     {
       "id": "P05",
-      "format": "webp",
-      "levels": [
-        {
-          "width": 1080,
-          "cols": 4,
-          "rows": 2
-        },
-        {
-          "width": 5952,
-          "cols": 8,
-          "rows": 4
-        }
-      ],
-      "sourceWidth": 5952,
-      "sourceHeight": 2976
-    },
-    {
-      "id": "P06",
       "format": "webp",
       "levels": [
         {
@@ -327,24 +291,6 @@
     },
     {
       "id": "P19",
-      "format": "webp",
-      "levels": [
-        {
-          "width": 1080,
-          "cols": 4,
-          "rows": 2
-        },
-        {
-          "width": 5952,
-          "cols": 8,
-          "rows": 4
-        }
-      ],
-      "sourceWidth": 5952,
-      "sourceHeight": 2976
-    },
-    {
-      "id": "P20",
       "format": "webp",
       "levels": [
         {
