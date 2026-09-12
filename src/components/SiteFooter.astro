@@ -1,5 +1,5 @@
 ---
-import Accreditation from './Accreditation.astro';
+import Unp from './Unp.astro';
 import Brand from './Brand.astro';
 import { footerClubLinks, site } from '../data/home';
 ---
@@ -36,7 +36,7 @@ import { footerClubLinks, site } from '../data/home';
       <span>{site.legalName}</span>
       <span>Юридический адрес: {site.legalAddress}</span>
       <span>Тел. <a href={site.phoneHref}>{site.phone}</a> · <a href={site.emailHref}>{site.email}</a></span>
-      <Accreditation number={site.accreditation} />
+      <Unp number={site.unp} />
     </div>
   </div>
 </footer>
@@ -67,7 +67,7 @@ import { footerClubLinks, site } from '../data/home';
   }
   .foot-bottom a{color:var(--ink-dim);transition:color .25s ease}
   .foot-bottom a:hover,.foot-bottom a:focus-visible{color:var(--blue)}
-  .foot-bottom :global(.accred){margin-top:10px}
+  .foot-bottom :global(.unp){margin-top:10px}
   @media (max-width: 820px){
     .foot-grid{grid-template-columns:1fr 1fr}
   }
