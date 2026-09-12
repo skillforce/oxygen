@@ -1,0 +1,49 @@
+# Apache/LiteSpeed counterpart of nginx/nginx.conf, for shared hosting where
+# the panel serves dist/ directly instead of running the Docker image.
+# nginx ignores this file, so it is harmless inside the container build.
+
+DirectoryIndex index.html
+
+<IfModule mod_mime.c>
+  AddType image/avif .avif
+  AddType font/woff2 .woff2
+  AddType application/manifest+json .webmanifest
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml \
+    application/javascript application/json application/manifest+json image/svg+xml
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Fingerprinted assets never change under the same name.
+  <LocationMatch "^/_astro/">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </LocationMatch>
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  # Tour media and images have stable filenames, so they stay revalidatable.
+  ExpiresByType image/avif "access plus 30 days"
+  ExpiresByType image/webp "access plus 30 days"
+  ExpiresByType image/jpeg "access plus 30 days"
+  ExpiresByType image/png "access plus 30 days"
+  ExpiresByType image/svg+xml "access plus 30 days"
+  ExpiresByType font/woff2 "access plus 30 days"
+  ExpiresByType text/html "access plus 5 minutes"
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Canonical host + HTTPS: the misspelled domain and www both fold into one.
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP_HOST} !^oxygen-fitness\.by$ [NC]
+  RewriteRule ^(.*)$ https://oxygen-fitness.by/$1 [R=301,L]
+
+  # /tour -> /tour/ so the relative asset paths inside the page resolve.
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteCond %{REQUEST_URI} !/$
+  RewriteRule ^(.*)$ /$1/ [R=308,L]
+</IfModule>
