@@ -31,6 +31,11 @@ export const site = {
   addressCity: 'Могилёв, Беларусь',
   summary: 'Тренажёрный зал. Кардио зона. Персональные тренировки. г. Могилёв, ул. Чигринова 2А.',
   accreditation: '791285911',
+  phone: '+375 (44) 725-79-79',
+  email: 'korennusha@mail.ru',
+  emailHref: 'mailto:korennusha@mail.ru',
+  legalName: 'Общество с ограниченной ответственностью «ФитПроЭксперт»',
+  legalAddress: 'Республика Беларусь, г. Могилёв, ул. Чигринова, 2А',
 };
 
 export const navLinks = [

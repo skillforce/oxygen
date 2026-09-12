@@ -10,7 +10,6 @@ import { footerClubLinks, site } from '../data/home';
       <div>
         <Brand />
         <p class="foot-summary">{site.summary}</p>
-        <Accreditation number={site.accreditation} />
       </div>
       <div>
         <h4>Клуб</h4>
@@ -23,6 +22,8 @@ import { footerClubLinks, site } from '../data/home';
         <ul>
           <li><address class="foot-address">{site.addressStreet}<br />{site.addressCity}</address></li>
           <li>Пн–Пт · 08:00–22:00<br />Сб–Вс · 09:00–18:00</li>
+          <li><a href={site.phoneHref}>{site.phone}</a></li>
+          <li><a href={site.emailHref}>{site.email}</a></li>
           <li><a href={site.instagramHref} target="_blank" rel="noopener noreferrer">{site.instagramLabel}</a></li>
         </ul>
       </div>
@@ -32,7 +33,10 @@ import { footerClubLinks, site } from '../data/home';
 
     <div class="foot-bottom">
       <span>© 2026 Oxygen Fitness Club</span>
-      <span class="mono">Республика Беларусь, г. Могилёв.</span>
+      <span>{site.legalName}</span>
+      <span>Юридический адрес: {site.legalAddress}</span>
+      <span>Тел. <a href={site.phoneHref}>{site.phone}</a> · <a href={site.emailHref}>{site.email}</a></span>
+      <Accreditation number={site.accreditation} />
     </div>
   </div>
 </footer>
@@ -57,10 +61,13 @@ import { footerClubLinks, site } from '../data/home';
   }
   .foot-big em{color:var(--blue);font-style:normal}
   .foot-bottom{
-    display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;
+    display:flex;flex-direction:column;align-items:flex-start;gap:6px;
     padding-top:24px;border-top:1px solid var(--rule);
-    color:var(--ink-dim);font-size:.82rem;
+    color:var(--ink-dim);font-size:.82rem;line-height:1.5;
   }
+  .foot-bottom a{color:var(--ink-dim);transition:color .25s ease}
+  .foot-bottom a:hover,.foot-bottom a:focus-visible{color:var(--blue)}
+  .foot-bottom :global(.accred){margin-top:10px}
   @media (max-width: 820px){
     .foot-grid{grid-template-columns:1fr 1fr}
   }
