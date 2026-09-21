@@ -1,6 +1,7 @@
 ---
 import Unp from './Unp.astro';
 import Brand from './Brand.astro';
+import InstagramIcon from './icons/InstagramIcon.astro';
 import { footerClubLinks, site } from '../data/home';
 ---
 
@@ -24,12 +25,22 @@ import { footerClubLinks, site } from '../data/home';
           <li>Пн–Пт · 08:00–22:00<br />Сб–Вс · 09:00–18:00</li>
           <li><a href={site.phoneHref}>{site.phone}</a></li>
           <li><a href={site.emailHref}>{site.email}</a></li>
-          <li><a href={site.instagramHref} target="_blank" rel="noopener noreferrer">{site.instagramLabel}</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Мы в социальных сетях</h4>
+        <ul>
+          <li>
+            <a class="foot-social" href={site.instagramHref} target="_blank" rel="noopener noreferrer">
+              <InstagramIcon />
+              <span>{site.instagramLabel}</span>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
 
-    <p class="foot-big display">O<em>X</em>YGEN<br />FITNESS.</p>
+    <p class="foot-big display">O<em>X</em>YGEN<br />FITNESS</p>
 
     <div class="foot-bottom">
       <span>© 2026 Oxygen Fitness Club</span>
@@ -47,13 +58,14 @@ import { footerClubLinks, site } from '../data/home';
     padding:clamp(60px, 7vw, 100px) 0 32px;
     border-top:1px solid var(--rule);
   }
-  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px}
   .foot h4{font-family:var(--font-mono);font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:14px;font-weight:500}
   .foot ul{list-style:none;display:flex;flex-direction:column;gap:8px}
   .foot-summary{margin-top:14px;color:var(--ink-dim);max-width:34ch}
   .foot-address{font-style:normal}
   .foot ul a{color:var(--ink);transition:color .25s ease}
   .foot ul a:hover,.foot ul a:focus-visible{color:var(--blue)}
+  .foot-social{display:inline-flex;align-items:center;gap:8px}
   .foot-big{
     font-family:var(--font-display);font-size:clamp(48px, 8vw, 120px);
     line-height:.9;letter-spacing:-.03em;text-transform:uppercase;

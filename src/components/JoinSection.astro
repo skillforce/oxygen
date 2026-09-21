@@ -112,16 +112,23 @@ import { plans, priceGroups, site } from '../data/home';
   .plan{
     background:var(--bg-card);border:1px solid var(--rule);border-radius:18px;
     padding:24px 22px;display:flex;flex-direction:column;gap:14px;
+    min-width:0;
     transition:transform .4s ease, border-color .3s ease;
   }
   .plan:hover{transform:translateY(-3px);border-color:rgba(79,165,216,.5)}
   .plan.featured{background:var(--blue);color:#0b0b0b;border-color:var(--blue)}
   .plan .name{font-family:var(--font-display);text-transform:uppercase;font-size:1.05rem;letter-spacing:.04em}
   .plan .price{
-    font-family:var(--font-display);font-size:clamp(40px, 5vw, 64px);
-    line-height:1;letter-spacing:-.02em;white-space:nowrap;
+    display:flex;align-items:baseline;flex-wrap:wrap;
+    column-gap:8px;row-gap:5px;
+    font-family:var(--font-display);font-size:clamp(40px, 4vw, 64px);
+    line-height:1;letter-spacing:-.02em;
   }
-  .plan .price small{font-size:.32em;font-family:var(--font-mono);letter-spacing:.1em;font-weight:400;display:inline-block;margin-left:6px;vertical-align:middle}
+  .plan .price small{
+    flex:0 0 auto;
+    font-size:.32em;font-family:var(--font-mono);letter-spacing:.1em;font-weight:400;
+    white-space:nowrap;
+  }
   .plan ul{list-style:none;display:flex;flex-direction:column;gap:8px;margin:8px 0}
   .plan ul li{font-size:.92rem;display:flex;gap:10px;align-items:flex-start}
   .plan ul li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--blue);margin-top:.55em;flex:0 0 auto}

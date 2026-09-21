@@ -20,7 +20,7 @@ const cardSizes = '(max-width: 980px) 100vw, 60vw';
       {
         programs.map((program) => (
           <a href="#join" class:list={['card image reveal', program.className]}>
-            <Image class="parallax-img" src={program.image} alt={program.alt} width={1600} widths={cardWidths} sizes={cardSizes} format="avif" loading="lazy" />
+            <Image class="parallax-img" src={program.image} alt={program.alt} width={1600} widths={cardWidths} sizes={cardSizes} format="avif" quality={43} loading="lazy" />
             <span class="num">{program.number} / {program.label}</span>
             <h3>
               {program.title.before}<em>{program.title.emphasis}</em>{program.title.after}

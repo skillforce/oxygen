@@ -11,7 +11,7 @@ const widths = [768, 1280, 1920];
  */
 export async function getHeroPoster() {
   const variants = await Promise.all(
-    widths.map((width) => getImage({ src: machinesBrick, width, format: 'avif' })),
+    widths.map((width) => getImage({ src: machinesBrick, width, format: 'avif', quality: 43 })),
   );
 
   return {

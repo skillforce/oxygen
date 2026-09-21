@@ -102,7 +102,7 @@ const mobileColumns = splitIntoBalancedColumns(galleryTiles);
       {
         galleryTiles.map((image) => (
           <figure class:list={['reveal', image.shape.className]}>
-            <Image src={image.src} alt={image.alt} width={800} widths={tileWidths} sizes={tileSizes} format="avif" loading="lazy" />
+            <Image src={image.src} alt={image.alt} width={800} widths={tileWidths} sizes={tileSizes} format="avif" quality={43} loading="lazy" />
           </figure>
         ))
       }
@@ -115,7 +115,7 @@ const mobileColumns = splitIntoBalancedColumns(galleryTiles);
             {
               column.items.map((image) => (
                 <figure class:list={['reveal', image.shape.className]}>
-                  <Image src={image.src} alt={image.alt} width={800} widths={tileWidths} sizes={tileSizes} format="avif" loading="lazy" />
+                  <Image src={image.src} alt={image.alt} width={800} widths={tileWidths} sizes={tileSizes} format="avif" quality={43} loading="lazy" />
                 </figure>
               ))
             }
