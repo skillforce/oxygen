@@ -56,7 +56,7 @@ export const programs = [
     className: 'c-1',
     image: gymRacks,
     alt: 'Силовая зона со стойками и свободными весами Oxygen Fitness.',
-    title: { before: 'Железо. ', emphasis: 'Без', after: ' очередей.' },
+    title: { before: 'Железо ', emphasis: 'Без', after: ' очередей' },
     description: 'Свободные веса, тренажёры, кардио зона — всё под одной крышей. Открыто с 8:00 до 22:00, без записи.',
   },
   {
@@ -65,7 +65,7 @@ export const programs = [
     className: 'c-2',
     image: cardioTreadmills,
     alt: 'Кардиозона: беговые дорожки и эллипсы.',
-    title: { before: 'Мотор, ', emphasis: 'а не', after: ' марафон.' },
+    title: { before: 'Мотор, ', emphasis: 'а не', after: ' марафон' },
     description: 'Беговые дорожки, эллипсы, гребные. Интервалы — по пульсу, а не на глаз.',
   },
   {
@@ -74,7 +74,7 @@ export const programs = [
     className: 'c-3',
     image: boxingBags,
     alt: 'Персональная тренировка у боксёрского мешка Oxygen.',
-    title: { before: 'Один на ', emphasis: 'один.', after: '' },
+    title: { before: 'Один на ', emphasis: 'один', after: '' },
     description: 'Программа под твою цель, разбор техники, измеримый прогресс.',
   },
   {
@@ -83,7 +83,7 @@ export const programs = [
     className: 'c-4',
     image: functionalRed,
     alt: 'Кроссфит зона с рамами и свободным пространством.',
-    title: { before: 'Тренируйся ', emphasis: 'вдвоём.', after: '' },
+    title: { before: 'Тренируйся ', emphasis: 'вдвоём', after: '' },
     description: 'Парные занятия с тренером — для пары, друзей или коллег. Один протокол, две скорости.',
   },
   {
@@ -92,7 +92,7 @@ export const programs = [
     className: 'c-5',
     image: loungeSofa,
     alt: 'Зона отдыха с диванами и картинами.',
-    title: { before: 'Зал для ', emphasis: 'всех.', after: '' },
+    title: { before: 'Зал для ', emphasis: 'всех', after: '' },
     description: 'Пришёл с ребёнком — есть где присмотреть и подождать, пока тренируешься.',
   },
 ];
