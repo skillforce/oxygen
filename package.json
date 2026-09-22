@@ -17,7 +17,7 @@
     "@photo-sphere-viewer/equirectangular-tiles-adapter": "^5.15.1",
     "@photo-sphere-viewer/map-plugin": "^5.15.1",
     "@photo-sphere-viewer/virtual-tour-plugin": "^5.15.1",
-    "astro": "^4.16.0",
+    "astro": "7.2.8",
     "sharp": "^0.35.3",
     "three": "^0.185.1"
   }
