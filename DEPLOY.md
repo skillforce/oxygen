@@ -40,8 +40,9 @@ PUBLIC_SITE_URL=https://oxygen-fitness.by pnpm build
 rsync -avz --delete dist/ h217020@87.232.64.134:/var/www/h217020/data/www/oxygen-fitness.by/
 ```
 
-`PUBLIC_SITE_URL` задавать обязательно: без него `astro.config.mjs` подставит
-дефолт `https://oxygen.vpname.cc`, и canonical с og:url уедут на чужой домен.
+Без `PUBLIC_SITE_URL` `astro.config.mjs` подставит прод-домен
+`https://oxygen-fitness.by`. Переменная нужна только для сборки под другой
+домен (стейджинг) — от неё зависят canonical, og:url, sitemap и robots.txt.
 
 `--delete` зеркалит папку. На сервере нет ничего, что правится руками, поэтому
 это безопасно.

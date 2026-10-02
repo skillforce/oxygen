@@ -9,15 +9,49 @@ import ProgramsSection from '../components/ProgramsSection.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import Ticker from '../components/Ticker.astro';
+import { hours, site } from '../data/home';
 
 const title = 'Фитнес клуб OXYGEN FITNESS | Могилев';
-const description = 'Фитнес клуб OXYGEN FITNESS | Могилев — клуб силовых и функциональных тренировок: настоящий коучинг, реальные люди, измеримый результат.';
+const description = 'Тренажёрный зал и фитнес-клуб в Могилёве на ул. Чигринова 2А. Абонементы от 75 руб./мес, персональные и сплит-тренировки, кардиозона. Пн–Пт 8–22, Сб–Вс 9–18.';
+
+const siteOrigin = Astro.site ?? new URL(Astro.url.origin);
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ExerciseGym',
+  '@id': new URL('/#gym', siteOrigin).toString(),
+  name: 'Oxygen Fitness',
+  url: new URL('/', siteOrigin).toString(),
+  image: new URL('/og-image.jpg', siteOrigin).toString(),
+  logo: new URL('/android-chrome-512x512.png', siteOrigin).toString(),
+  description,
+  telephone: site.phoneHref.replace('tel:', ''),
+  email: site.email,
+  priceRange: '10–900 BYN',
+  currenciesAccepted: 'BYN',
+  paymentAccepted: 'Cash, Credit Card',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.addressStreet,
+    addressLocality: 'Могилёв',
+    addressRegion: 'Могилёвская область',
+    postalCode: '212002',
+    addressCountry: 'BY',
+  },
+  openingHoursSpecification: hours.map((item) => ({
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: item.days,
+    opens: item.from,
+    closes: item.to,
+  })),
+  sameAs: [site.instagramHref],
+};
 
 const heroPoster = await getHeroPoster();
 ---
 
 <BaseLayout title={title} description={description}>
   <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
     <link
       rel="preload"
       as="image"

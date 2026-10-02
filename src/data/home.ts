@@ -45,8 +45,8 @@ export const navLinks = [
 ];
 
 export const hours = [
-  { label: 'Пн — Пт', from: '08:00', to: '22:00' },
-  { label: 'Сб — Вс', from: '09:00', to: '18:00' },
+  { label: 'Пн — Пт', days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], from: '08:00', to: '22:00' },
+  { label: 'Сб — Вс', days: ['Saturday', 'Sunday'], from: '09:00', to: '18:00' },
 ];
 
 export const programs = [
@@ -122,7 +122,7 @@ export const galleryImages = [
 export const plans = [
   {
     name: 'Месяц',
-    price: '120',
+    price: '125',
     period: 'руб. / 1 мес.',
     items: [
       'Безлимитный доступ в тренажёрный зал',
@@ -131,20 +131,20 @@ export const plans = [
   },
   {
     name: '3 месяца',
-    price: '290',
+    price: '300',
     period: 'руб. / 3 мес.',
     items: [
-      '≈ 97 руб. в месяц',
-      'Экономия 70 руб. против помесячного',
+      '100 руб. в месяц',
+      'Экономия 75 руб. против помесячного',
       'Безлимитный доступ в тренажёрный зал',
     ],
   },
   {
     name: '6 месяцев',
-    price: '510',
+    price: '530',
     period: 'руб. / 6 мес.',
     items: [
-      '85 руб. в месяц',
+      '≈ 88 руб. в месяц',
       '2 заморозки по 7 дней',
       'Приоритет на персональные слоты',
     ],
@@ -157,7 +157,7 @@ export const plans = [
     featured: true,
     items: [
       '75 руб. в месяц — минимальный тариф',
-      'Экономия 540 руб. против помесячного',
+      'Экономия 600 руб. против помесячного',
       'Безлимитный доступ весь год',
     ],
   },
@@ -176,7 +176,7 @@ export const priceGroups = [
   {
     title: 'Специальные абонементы',
     rows: [
-      { name: 'Безлимит «утро»', detail: '8:00 – 16:00 · 1 мес.', value: '105', unit: 'руб.' },
+      { name: 'Безлимит «утро»', detail: '8:00 – 16:00 · 1 мес.', value: '110', unit: 'руб.' },
       { name: 'Безлимит для студентов', detail: '1 мес.', value: '100', unit: 'руб.' },
       { name: '«Семейный»', detail: '2 чел. · 1 мес.', value: '200', unit: 'руб.' },
       { name: '«Семейный»', detail: '2 чел. · 3 мес.', value: '480', unit: 'руб.' },
@@ -188,6 +188,7 @@ export const priceGroups = [
       { name: 'Занятие с тренером', value: '25 / 30', unit: 'руб.' },
       { name: 'Сплит', detail: '2 человека', value: '40 / 50', unit: 'руб.' },
       { name: 'Заморозка', detail: '7 дней', value: '15', unit: 'руб.' },
+      { name: 'Аренда шкафа', detail: '1 мес.', value: '40', unit: 'руб.' },
     ],
   },
   {
